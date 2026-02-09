@@ -1,5 +1,350 @@
 <!DOCTYPE html>
 <html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nathan Chan | Data Scientist</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Inter"', 'sans-serif'], // Ta police originale
+                    },
+                    colors: {
+                        // Ta palette de couleurs extraite de ton style.css
+                        cream: '#fefae0',      // --background-light
+                        olive: '#253551',      // --primary-color
+                        forest: '#253551',     // --secondary-color / Text
+                        earth: '#936025',      // --accent-color
+                        sand: '#45322E',       // --light-accent
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'fade-in': 'fadeIn 1s ease-out forwards',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Styles */
+        body { 
+            background-color: #fefae0; /* Cream background */
+            color: #253551;            /* Forest text */
+        }
+        
+        /* Card Styles - Clean & Minimalist */
+        .project-card {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 30, 255, 0.1);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .project-card:hover {
+            border-color: #253551;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px -5px rgba(40, 54, 24, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Animations */
+        .reveal { 
+            opacity: 0; 
+            transform: translateY(20px); 
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); 
+        }
+        .reveal.active { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            background: #253551; /* Forest green tint backdrop */
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            transform: scale(0.95) translateY(20px);
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.open .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        /* Selection color - CORRIGÉ avec texte blanc */
+        ::selection {
+            background: #936025;
+            color: #ffffff;
+        }
+
+        /* Menu mobile */
+        .mobile-menu {
+            display: none;
+        }
+        .mobile-menu.active {
+            display: block;
+        }
+    </style>
+</head>
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nathan Chan | Data Scientist</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Inter"', 'sans-serif'], // Ta police originale
+                    },
+                    colors: {
+                        // Ta palette de couleurs extraite de ton style.css
+                        cream: '#fefae0',      // --background-light
+                        olive: '#253551',      // --primary-color
+                        forest: '#253551',     // --secondary-color / Text
+                        earth: '#936025',      // --accent-color
+                        sand: '#45322E',       // --light-accent
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'fade-in': 'fadeIn 1s ease-out forwards',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Styles */
+        body { 
+            background-color: #fefae0; /* Cream background */
+            color: #253551;            /* Forest text */
+        }
+        
+        /* Card Styles - Clean & Minimalist */
+        .project-card {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 30, 255, 0.1);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .project-card:hover {
+            border-color: #253551;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px -5px rgba(40, 54, 24, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Animations */
+        .reveal { 
+            opacity: 0; 
+            transform: translateY(20px); 
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); 
+        }
+        .reveal.active { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            background: #253551; /* Forest green tint backdrop */
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            transform: scale(0.95) translateY(20px);
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.open .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        /* Selection color */
+        ::selection {
+            background: #dda15e;
+            color: #253551;
+        }
+    </style>
+</head>
+<body class="antialiased font-sans relative selection:bg-sand selection:text-forest">
+
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-sand/30 rounded-full mix-blend-multiply filter blur-[80px] animate-blob"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-olive/20 rounded-full mix-blend-multiply filter blur-[80px] animate-blob animation-delay-2000"></div>
+    </div>
+
+    <nav class="fixed w-full z-40 top-0 bg-cream/80 backdrop-blur-md border-b border-olive/10">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-xl font-bold text-forest tracking-tight hover:text-earth transition-colors">
+                Nathan.<span class="text-earth">Data</span>
+            </a>
+            <div class="hidden md:flex space-x-8 text-sm font-medium">
+                <a href="#about" class="text-forest/70 hover:text-earth transition-colors²">À propos</a>
+                <a href="#projects" class="text-forest/70 hover:text-earth transition-colors">Projets</a>
+                <a href="#contact" class="text-forest/70 hover:text-earth transition-colors">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="min-h-screen flex items-center justify-center relative z-10 px-6 pt-20">
+        <div class="max-w-4xl w-full text-center md:text-left">
+            <span class="inline-block py-1 px-3 rounded-full bg-olive/10 text-olive text-sm font-semibold mb-6 reveal">
+                Bonjour, je suis Nathan
+            </span>
+            <h1 class="text-5xl md:text-7xl font-extrabold text-forest mb-6 tracking-tight leading-tight reveal" style="transition-delay: 100ms;">
+                Transformer la donnée <br>
+                en <span class="text-earth relative inline-block">
+                    décisions
+                    <svg class="absolute w-full h-3 -bottom-1 left-0 text-sand -z-10" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="8" fill="none" /></svg>
+                </span>.
+            </h1>
+            <h2 class="text-xl md:text-2xl text-forest/70 mb-10 reveal max-w-2xl font-light" style="transition-delay: 200ms;">
+                Data Scientist & Analyst en formation. Je crée des ponts entre les mathématiques et le business.
+            </h2>
+            <div class="flex flex-col md:flex-row gap-4 reveal" style="transition-delay: 300ms;">
+                <a href="#projects" class="px-8 py-4 bg-forest text-cream font-medium rounded-lg hover:bg-olive transition-all duration-300 shadow-lg shadow-olive/20 text-center">
+                    Voir mes projets
+                </a>
+                <a href="#contact" class="px-8 py-4 bg-transparent border-2 border-forest/20 text-forest font-medium rounded-lg hover:border-forest hover:bg-forest/5 transition-all duration-300 text-center">
+                    Me contacter
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-24 relative z-10 px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-16 items-center reveal">
+                <div class="relative order-2 md:order-1">
+                    <div class="relative z-10 rounded-2xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
+                        <img src="Image/Photo CV.jpg" alt="Nathan" class="w-full h-auto object-cover">
+                    </div>
+                    <div class="absolute inset-0 bg-earth rounded-2xl -rotate-3 -z-10 translate-x-4 translate-y-4"></div>
+                </div>
+                
+                <div class="order-1 md:order-2 space-y-6">
+                    <h2 class="section-title">À propos de moi</h2>
+                    <div class="w-16 h-1 bg-earth rounded-full"></div>
+                    
+                    <p class="text-forest/80 leading-relaxed">
+                        Actuellement étudiant en <strong>BUT Science des Données</strong> à l'IUT Paris Rives de Seine et en alternance chez <strong>Kantar Worldpanel</strong>.
+                    </p>
+                    <p class="text-forest/80 leading-relaxed">
+                        Mon objectif est simple : faire parler les chiffres. Que ce soit via l'analyse statistique, l'automatisation de processus ou la création de tableaux de bord, je cherche toujours à apporter de la clarté. <br> <strong>Je cherche une alternance pour Septembre 2026, continuant mes études en Master.</strong>
+                    </p>
+
+                    <div class="pt-4">
+                        <h3 class="text-sm font-bold text-forest uppercase tracking-wider mb-4">Mes outils préférés</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-white border border-olive/20 rounded-md text-sm text-olive font-medium shadow-sm">Python </span>
+                            <span class="px-3 py-1 bg-white border border-olive/20 rounded-md text-sm text-olive font-medium shadow-sm">R </span>
+                            <span class="px-3 py-1 bg-white border border-olive/20 rounded-md text-sm text-olive font-medium shadow-sm">Power BI </span>
+                            <span class="px-3 py-1 bg-white border border-olive/20 rounded-md text-sm text-olive font-medium shadow-sm">SQL</span>
+                        </div>
+                        
+                        <p>
+                            <div class="social-small">
+                            <a href="https://github.com/NathanChan1710" aria-label="GitHub" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+                            <a href="https://www.linkedin.com/in/nathan-chan-sing-man-560b10272/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="mailto:nathan.chansingman@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                            </div>
+                        </p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('open');
+            document.body.style.overflow = 'hidden'; 
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('open');
+            document.body.style.overflow = 'auto'; 
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                document.querySelectorAll('.modal-overlay').forEach(modal => {
+                    modal.classList.remove('open');
+                    document.body.style.overflow = 'auto';
+                });
+            }
+        });
+
+        // Scroll Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+
+
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
@@ -39,153 +384,79 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-bg">
-            <svg class="blob blob-1" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
-                <g transform="translate(300,300)">
-                    <path d="M120,-166C159,-135,188,-95,199,-51C210,-7,203,42,178,88C153,135,110,179,63,195C16,212,-34,200,-82,177C-131,154,-178,121,-193,76C-207,31,-189,-24,-162,-68C-135,-112,-98,-145,-55,-177C-13,-209,34,-241,79,-233C124,-225,81,-197,120,-166Z" fill="#606c38" fill-opacity="0.16"></path>
-                </g>
-            </svg>
-            <svg class="blob blob-2" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
-                <g transform="translate(300,300)">
-                    <path d="M156,-144C190,-111,200,-56,195,-8C190,40,170,80,137,114C104,148,58,176,7,189C-44,202,-88,200,-126,178C-164,156,-196,114,-213,64C-229,14,-230,-44,-204,-89C-179,-134,-126,-166,-76,-183C-26,-200,20,-203,68,-190C116,-178,122,-177,156,-144Z" fill="#bc6c25" fill-opacity="0.12"></path>
-                </g>
-            </svg>
-        </div>
-
-        <div class="container hero-container">
-            <div class="hero-card">
-                <div class="hero-left">
-                    <div class="hero-intro">
-                        <h1 class="hero-name">Nathan Chan Sing Man</h1>
-                        <p class="hero-role">Data Scientist — BUT SD</p>
-                        <p class="hero-description">J'aide les équipes à transformer des données brutes en décisions claires : dashboards, automatisation et analyses statistiques.</p>
-
-                        <div class="cta-buttons">
-                            <a href="#projects" class="btn-primary-custom btn-hero">
-                                <i class="fas fa-eye"></i> Voir mes projets
-                            </a>
-                            <a href="mailto:nathan.chansingman@gmail.com" class="btn-primary-custom btn-ghost">
-                                <i class="fas fa-envelope"></i> Me contacter
-                            </a>
-                        </div>
-
-                        <div class="hero-meta">
-                            <span class="meta-item"><strong>Alternant</strong> @ Kantar</span>
-                            <span class="meta-item">Paris • Disponible</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="hero-right">
-                    <div class="profile-wrap">
-                        <div class="profile-ring"></div>
-                        <img id="photo-profil" src="Image/Photo CV.jpg" alt="photo de profil">
-                    </div>
-                    <div class="social-small">
-                        <a href="https://github.com/NathanChan1710" aria-label="GitHub" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
-                        <a href="https://www.linkedin.com/in/nathan-chan-sing-man-560b10272/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="mailto:nathan.chansingman@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="section">
-        <div class="container">
-            <h2 class="section-title">À propos de moi</h2>
-            <div class="row">
-                <div class="col-lg-8 mx-auto">
-                    <div class="card-modern fade-in">
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <h5 class="text-primary"><i class="fas fa-user-graduate"></i> Formation</h5>
-                                <p>IUT Paris Rives de Seine <br>BUT Science des Données (Bac+3)</p>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <h5 class="text-primary"><i class="fas fa-briefcase"></i> Expérience</h5>
-                                <p>Data Scientist Alternant<br>Kantar Worldpanel</p>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <h5 class="text-primary"><i class="fas fa-globe"></i> Langues</h5>
-                                <p>Français <br>Anglais B1<br>Espagnol A1</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <p class="lead">
-                            Bonjour, je m’appelle Nathan, étudiant en troisième année de BUT Science des Données, passionné par l'analyse de données à des fins décisionnelles. Actuellement en alternance chez Kantar Worldpanel, je développe des solutions innovantes pour transformer les données en insights stratégiques. <br> <strong> Je cherche une alternance pour Septembre 2026, continuant mes études en Master. </strong>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Skills Section -->
-    <section id="skills" class="section">
-        <div class="container">
-            <h2 class="section-title">Compétences</h2>
-            <div class="row">
-                <div class="col-md-6 mb-4">
-                    <div class="skill-item fade-in">
-                        <div class="skill-category">
-                            <i class="fas fa-code"></i> Programmation
-                        </div>
-                        <ul class="list-unstyled mb-0">
-                            <li><i class="fab fa-python skill-icon icon-python me-2"></i>Python</li>
-                            <li><i class="fab fa-r-project skill-icon icon-r me-2"></i>R</li>
-                            <li><i class="fa-solid fa-database skill-icon icon-sql me-2"></i>SQL</li>
-                            <li><i class="fa-solid fa-cog skill-icon icon-sas me-2"></i>SAS</li>
-                            <li><i class="fab fa-html5 skill-icon icon-html me-2"></i>HTML/CSS</li>
-                        </ul>
-                    </div>
-                </div>
+<section id="skills" class="section">
+    <div class="container">
+        <h2 class="section-title">Compétences</h2>
+        <div class="row">
 
-                <div class="col-md-6 mb-4">
-                    <div class="skill-item fade-in">
-                        <div class="skill-category">
-                            <i class="fas fa-tools"></i> Outils de visualisation
-                        </div>
-                        <ul class="list-unstyled mb-0">
-                            <li><i class="fas fa-file-excel skill-icon icon-excel me-2"></i>Excel</li>
-                            <li><i class="fa-solid fa-chart-simple skill-icon icon-powerbi me-2"></i>Power BI</li>
-                            <li><i class="fa-solid fa-database skill-icon icon-dataiku me-2"></i>Dataiku</li>
-                            <li><i class="fa-solid fa-rocket skill-icon icon-streamlit me-2"></i>Streamlit</li>
-                            <li><i class="fab fa-r-project skill-icon icon-rshiny me-2"></i>Shiny</li>
-                        </ul>
+            <!-- Programmation -->
+            <div class="col-md-6 mb-4">
+                <div class="skill-item fade-in">
+                    <div class="skill-category">
+                        <i class="fas fa-code"></i> Programmation
                     </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <div class="skill-item fade-in">
-                        <div class="skill-category">
-                            <i class="fas fa-database"></i> Data Science
-                        </div>
-                        <ul class="list-unstyled mb-0">
-                            <li><i class="fa-solid fa-chart-line skill-icon icon-analytics me-2"></i>Analyse statistique avancé</li>
-                            <li><i class="fa-solid fa-file-import skill-icon icon-extract me-2"></i>Extraction de données</li>
-                            <li><i class="fa-solid fa-chart-pie skill-icon icon-viz me-2"></i>Visualisation de données</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <div class="skill-item faShiny">
-                        <div class="skill-category">
-                            <i class="fas fa-users"></i> Soft Skills
-                        </div>
-                        <ul class="list-unstyled mb-0">
-                            <li><i class="fa-solid fa-users skill-icon icon-team me-2"></i>Travail en équipe</li>
-                            <li><i class="fa-solid fa-microphone skill-icon icon-presentation me-2"></i>Aisance des présentation orale</li>
-                            <li><i class="fa-solid fa-file-alt skill-icon icon-writing me-2"></i>Rédaction de rapports / cahier des charges</li>
-                            <li><i class="fa-solid fa-landmark skill-icon icon-economics me-2"></i>base d'économie et de gestion</li>
-                        </ul>
-                    </div>
+                    <ul class="list-unstyled mb-0">
+                        <li><i class="fab fa-python skill-icon me-2"></i>Python</li>
+                        <li><i class="fab fa-r-project skill-icon me-2"></i>R</li>
+                        <li><i class="fa-solid fa-database skill-icon me-2"></i>SQL</li>
+                        <li><i class="fa-solid fa-cog skill-icon me-2"></i>SAS</li>
+                        <li><i class="fab fa-html5 skill-icon me-2"></i>HTML/CSS</li>
+                    </ul>
                 </div>
             </div>
+
+            <!-- Outils de visualisation -->
+            <div class="col-md-6 mb-4">
+                <div class="skill-item fade-in">
+                    <div class="skill-category">
+                        <i class="fas fa-chart-bar"></i> Outils de visualisation
+                    </div>
+                    <ul class="list-unstyled mb-0">
+                        <li><i class="fas fa-file-excel skill-icon me-2"></i>Excel</li>
+                        <li><i class="fa-solid fa-chart-simple skill-icon me-2"></i>Power BI</li>
+                        <li><i class="fa-solid fa-database skill-icon me-2"></i>Dataiku</li>
+                        <li><i class="fa-solid fa-bolt skill-icon me-2"></i>Streamlit</li>
+                        <li><i class="fab fa-r-project skill-icon me-2"></i>Shiny</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Data Science -->
+            <div class="col-md-6 mb-4">
+                <div class="skill-item fade-in">
+                    <div class="skill-category">
+                        <i class="fas fa-database"></i> Data Science
+                    </div>
+                    <ul class="list-unstyled mb-0">
+                        <li><i class="fa-solid fa-brain skill-icon me-2"></i>Machine Learning & Deep Learning</li>
+                        <li><i class="fa-solid fa-chart-pie skill-icon me-2"></i>Dataviz & Business Intelligence</li>
+                        <li><i class="fa-solid fa-chart-line skill-icon icon-analytics me-2"></i>Analyse statistique avancée</li>
+                        <li><i class="fa-solid fa-gears skill-icon me-2"></i>ETL (Extraction, Transformation, Chargement)</li>
+                        <li><i class="fa-solid fa-flask skill-icon me-2"></i>Expérimentation & Modélisation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Soft Skills -->
+            <div class="col-md-6 mb-4">
+                <div class="skill-item fade-in">
+                    <div class="skill-category">
+                        <i class="fas fa-users"></i> Soft Skills
+                    </div>
+                    <ul class="list-unstyled mb-0">
+                        <li><i class="fa-solid fa-users skill-icon me-2"></i>Travail en équipe</li>
+                        <li><i class="fa-solid fa-microphone skill-icon me-2"></i>Aisance à l’oral</li>
+                        <li><i class="fa-solid fa-file-alt skill-icon me-2"></i>Rédaction de rapports & documentation</li>
+                        <li><i class="fa-solid fa-landmark skill-icon me-2"></i>Bases en économie & gestion</li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Projects Section -->
     <section id="projects" class="section">
@@ -193,6 +464,37 @@
             <h2 class="section-title">Mes Projets</h2>
             
             <div class="row">
+
+
+                <!-- Projet 6: SAE SNCF -->
+                <div class="col-md-4 mb-4">
+                    <div class="project-card-clickable" data-bs-toggle="modal" data-bs-target="#projectModal6">
+                        <div class="project-image">
+                            <img src="Image/sncf.png" alt="SAE SNCF">
+                            <div class="project-overlay">
+                                <i class="fas fa-eye"></i>
+                                <span>Voir le projet</span>
+                            </div>
+                        </div>
+                        <div class="project-card-content">
+                            <div class="project-card-top">
+                                <h4 class="project-card-title">Analyse Réseaux et Infrastructure pour la SNCF</h4>
+                            </div>
+                            <p class="project-card-desc">Ce projet vise à améliorer la compréhension des incients de la SNCF. En explorant comment l’analyse conjointe des données de réseaux et des infrastructures peuvent être liée.</p>
+                            <div class="project-cta"><a class="btn-outline" data-bs-toggle="modal" data-bs-target="#projectModal6">En savoir plus</a></div>
+                            <div class="project-tags">
+                                <span class="custom-badge badge-info">R</span>
+                                <span class="custom-badge badge-info">PowerBI</span>
+                            </div>
+                            <small class="text-muted d-block mt-3">Janvier 2026</small>
+                            <div class="mt-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
                 <!-- Projet 4: Renault Financial Analysis -->
                 <div class="col-md-4 mb-4">
                     <div class="project-card-clickable" data-bs-toggle="modal" data-bs-target="#projectModal4">
@@ -205,7 +507,7 @@
                         </div>
                         <div class="project-card-content">
                             <div class="project-card-top">
-                                <h4 class="project-card-title">Renault Financial Analysis</h4>
+                                <h4 class="project-card-title">Anaylse Financière Renault</h4>
                             </div>
                             <p class="project-card-desc">Analyse des données boursières de l'action Renault (CAC40) avec récupération en direct via Python. Dashboard PowerBI avec KPIs, candlestick et analyse des prévisions 2025.</p>
                             <div class="project-cta"><a class="btn-outline" data-bs-toggle="modal" data-bs-target="#projectModal4">En savoir plus</a></div>
@@ -223,7 +525,6 @@
                         </div>
                     </div>
                 </div>
-                
 
                 <!-- Projet 5: Data Mining Scoring -->
                 <div class="col-md-4 mb-4">
@@ -237,7 +538,7 @@
                         </div>
                         <div class="project-card-content">
                             <div class="project-card-top">
-                                <h4 class="project-card-title">Scoring repeat buyers</h4>
+                                <h4 class="project-card-title">Scoring de réacheteurs</h4>
                             </div>
                             <p class="project-card-desc"> Création d'un script R pour nettoyer une base de données d'une agence de voyage afin d'établir un score de clients réacheteurs. Ce projet a été réalisé en apprentissage non supervisé, afin d'être analysée dans Dashboard Power BI.</p>
                             <div class="project-cta"><a class="btn-outline" data-bs-toggle="modal" data-bs-target="#projectModal5">En savoir plus</a></div>
@@ -257,7 +558,36 @@
                 </div>
 
 
-                
+                <!-- Projet 6: SNCF SAE -->
+                <div class="col-md-4 mb-4">
+                    <div class="project-card-clickable" data-bs-toggle="modal" data-bs-target="#projectModal4">
+                        <div class="project-image">
+                            <img src="Image/sncf_1.png" alt="SNCF SAE">
+                            <div class="project-overlay">
+                                <i class="fas fa-eye"></i>
+                                <span>Voir le projet</span>
+                            </div>
+                        </div>
+                        <div class="project-card-content">
+                            <div class="project-card-top">
+                                <h4 class="project-card-title">SNCF SAE</h4>
+                            </div>
+                            <p class="project-card-desc">Analyse des données boursières de l'action SNCF (CAC40) avec récupération en direct via Python. Dashboard PowerBI avec KPIs, candlestick et analyse des prévisions 2025.</p>
+                            <div class="project-cta"><a class="btn-outline" data-bs-toggle="modal" data-bs-target="#projectModal4">En savoir plus</a></div>
+                            <div class="project-tags">
+                                <span class="custom-badge badge-info">PowerBI</span>
+                                <span class="custom-badge badge-info">Python</span>
+                                <span class="custom-badge badge-info">Yfinance</span>
+                            </div>
+                            <small class="text-muted d-block mt-3">Janvier 2026</small>
+                            <div class="mt-2">
+                                <a href="https://github.com/NathanChan1710/Renault-Financial-Analysis" target="_blank" rel="noopener" class="btn btn-sm btn-github">
+                                    <i class="fab fa-github me-2"></i>GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Projet 1: Concours DataViz Power BI -->
                 <div class="col-md-4 mb-4">
@@ -579,73 +909,211 @@
         </div>
     </div>
 
-    <!-- Modal Projet 4: Renault Financial Analysis -->
-    <div class="modal fade" id="projectModal4" tabindex="-1" aria-labelledby="projectModal4Label" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="projectModal4Label">Renault Financial Analysis</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="modal-project-image mb-4">
-                        <img src="Image/renault_dataviz.png" alt="Renault Financial Analysis" class="img-fluid rounded">
-                    </div>
-                    <h6 class="fw-bold mb-3">Description du projet</h6>
-                    <div class="modal-meta">
-                        <span class="meta-badge">Finance</span>
-                        <span class="meta-badge">Data Visualization</span>
-                        <div class="modal-date">Janvier 2026</div>
-                    </div>
-                    <p>Analyse approfondie des données boursières de l'action Renault (composante du CAC40). Ce projet combine l'automatisation Python pour la récupération de données en direct avec la visualisation avancée dans PowerBI, permettant une analyse financière complète et actualisée.</p>
+<!-- Modal Projet 4: SNCF SAE -->
+<div class="modal fade" id="projectModal6" tabindex="-1" aria-labelledby="projectModal6Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="projectModal6Label">Analyse Réseaux et Infrastructure pour la SNCF</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-                    <h6 class="fw-bold mb-3 mt-4">Méthodologie</h6>
-                    <ul>
-                        <li>Récupération automatique des données boursières via le package Python Yfinance</li>
-                        <li>Script Python pour charger les données en direct et les transformer</li>
-                        <li>Construction d'un dashboard PowerBI avec KPIs financiers clés</li>
-                        <li>Analyse technique avec candlestick et moyennes mobiles</li>
+            <div class="modal-body">
+
+                <!-- Carrousel d'images -->
+                <div id="carouselProject6" class="carousel slide mb-4" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+
+                        <div class="carousel-item active">
+                            <img src="Image/sncf_1.png" class="d-block w-100 rounded" alt="Renault Financial Analysis">
+                        </div>
+
+                        <div class="carousel-item">
+                            <img src="Image/sncf_2.png" class="d-block w-100 rounded" alt="Image 2">
+                        </div>
+
+                        <div class="carousel-item">
+                            <img src="Image/sncf_3.png" class="d-block w-100 rounded" alt="Image 3">
+                        </div>
+
+                    </div>
+
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselProject6" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselProject6" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselProject6" data-bs-slide-to="0" class="active"></button>
+                        <button type="button" data-bs-target="#carouselProject6" data-bs-slide-to="1"></button>
+                        <button type="button" data-bs-target="#carouselProject6" data-bs-slide-to="2"></button>
+                        <button type="button" data-bs-target="#carouselProject6" data-bs-slide-to="3"></button>
+                    </div>
+                </div>
+
+                <h6 class="fw-bold mb-3">Description du projet</h6>
+                <div class="modal-meta">
+                    <span class="meta-badge">SNCF</span>
+                    <span class="meta-badge">Réseau et Voyageurs</span>
+                    <span class="meta-badge">Datavisualisation</span>
+                    <div class="modal-date">Janvier 2026</div>
+                </div>
+
+                <p>L’analyse s’inscrit dans la mission centrale de SNCF Réseau et SNCF Voyageurs : garantir un réseau fiable, disponible et sécurisé pour des millions d’usagers. Le fonctionnement quotidien dépend d’un parc immense d’équipements dont la conception, le déploiement et la maintenance exigent une surveillance continue. Chaque défaut technique, chaque incident détecté par les trains constitue une source précieuse de retour d’expérience pour anticiper les risques et améliorer la performance du réseau.</p>
+
+                <h6 class="fw-bold mb-3 mt-4">Méthodologie</h6>
+                <ul>
+                    <li>Préparation des données et nettoyage</li>
+                    <li>Analyse descriptive des données sur Power BI</li>
+                    <li> Conception du Power BI pour respecter la charte graphique de la SNCF</li>
+                    <li>Respect des deadline, présentation du projet en amphithéâtre</li>
+                </ul>
+
+                <h6 class="fw-bold mb-3 mt-4">Technologies utilisées</h6>
+                <div class="mb-3">
+                    <span class="custom-badge badge-info">R</span>
+                    <span class="custom-badge badge-info">Jointure</span>
+                    <span class="custom-badge badge-info">Data Open Source SNCF</span>
+                    <span class="custom-badge badge-info">Power BI</span>
+                </div>
+
+                <h6 class="fw-bold mb-3 mt-4">Résultats & Conclusions</h6>
+                <div class="modal-results">
+                    <ul style="margin-top: 0.5rem;">
+                        <li>Ligne entre Paris/Dijon/Lyon : nombreux événements trains</li>
+                        <li>Sur les tranches de tensions y en a une dizaine qui ont des  anormales + de 10.000KW d’écarts environ</li>
+                        <li>Certains Evènement n’arrive qu'à l’arret </li>
+                        <li>Zone de Paris avec le plus d’écart de tension mais aussi le plus d’incidents liés à la tension en mars 2013</li>
                     </ul>
-
-                    <h6 class="fw-bold mb-3 mt-4">Technologies utilisées</h6>
-                    <div class="mb-3">
-                        <span class="custom-badge badge-info">PowerBI</span>
-                        <span class="custom-badge badge-info">Python</span>
-                        <span class="custom-badge badge-info">Yfinance</span>
-                        <span class="custom-badge badge-info">Données boursières</span>
-                    </div>
-
-                    <h6 class="fw-bold mb-3 mt-4">Résultats & Conclusions</h6>
-                    <div class="modal-results">
-                        <p><strong>Événement clé analysé :</strong> Abaissement des prévisions 2025 par Renault</p>
-                        <ul style="margin-top: 0.5rem;">
-                            <li><strong>Marge opérationnelle :</strong> Passage de 7% à 6,5% pour 2025</li>
-                            <li><strong>Leadership :</strong> Nomination d'un CEO intérimaire ajoutant de l'incertitude</li>
-                            <li><strong>Impact boursier :</strong> Analyse des mouvements de prix et volatilité avant/après annonce</li>
-                            <li><strong>KPIs du dashboard :</strong> Variation de cours, volumes d'échange, moyennes mobiles (20j, 50j, 200j)</li>
-                        </ul>
-                    </div>
-
-                    <div class="mt-4">
-                        <small class="text-muted">Projet académique - Janvier 2026</small>
-                    </div>
-                    <div class="mt-3">
-                        <a href="https://github.com/NathanChan1710/Renault-Financial-Analysis" target="_blank" rel="noopener" class="btn btn-sm btn-github">
-                            <i class="fab fa-github me-2"></i>Voir sur GitHub
-                        </a>
-                    </div>
                 </div>
+
+                <div class="mt-4">
+                    <small class="text-muted">Projet académique - Janvier 2026</small>
+                </div>
+
+                <div class="mt-3">
+                    <a href="https://github.com/NathanChan1710/Renault-Financial-Analysis" target="_blank" rel="noopener" class="btn btn-sm btn-github">
+                        <i class="fab fa-github me-2"></i>Voir sur GitHub
+                    </a>
+                </div>
+
             </div>
         </div>
     </div>
+</div>
 
 
-    <!-- Modal Projet 5: Renault Financial Analysis -->
+
+
+    <!-- Modal Projet 4: Renault Financial Analysis -->
+<div class="modal fade" id="projectModal4" tabindex="-1" aria-labelledby="projectModal4Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="projectModal4Label">Renault Financial Analysis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- Carrousel d'images -->
+                <div id="carouselProject4" class="carousel slide mb-4" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+
+                        <div class="carousel-item active">
+                            <img src="Image/renault_dataviz_1.png" class="d-block w-100 rounded" alt="Renault Financial Analysis">
+                        </div>
+
+                        <div class="carousel-item">
+                            <img src="Image/renault_dataviz_2.png" class="d-block w-100 rounded" alt="Image 2">
+                        </div>
+
+                        <div class="carousel-item">
+                            <img src="Image/renault_dataviz_3.png" class="d-block w-100 rounded" alt="Image 3">
+                        </div>
+
+                        <div class="carousel-item">
+                            <img src="Image/renault_dataviz_4.png" class="d-block w-100 rounded" alt="Image 4">
+                        </div>
+
+                    </div>
+
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselProject4" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselProject4" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselProject4" data-bs-slide-to="0" class="active"></button>
+                        <button type="button" data-bs-target="#carouselProject4" data-bs-slide-to="1"></button>
+                        <button type="button" data-bs-target="#carouselProject4" data-bs-slide-to="2"></button>
+                        <button type="button" data-bs-target="#carouselProject4" data-bs-slide-to="3"></button>
+                    </div>
+                </div>
+
+                <h6 class="fw-bold mb-3">Description du projet</h6>
+                <div class="modal-meta">
+                    <span class="meta-badge">Finance</span>
+                    <span class="meta-badge">Data Visualization</span>
+                    <div class="modal-date">Janvier 2026</div>
+                </div>
+
+                <p>Analyse approfondie des données boursières de l'action Renault (composante du CAC40). Ce projet combine l'automatisation Python pour la récupération de données en direct avec la visualisation avancée dans PowerBI, permettant une analyse financière complète et actualisée.</p>
+
+                <h6 class="fw-bold mb-3 mt-4">Méthodologie</h6>
+                <ul>
+                    <li>Récupération automatique des données boursières via le package Python Yfinance</li>
+                    <li>Script Python pour charger les données en direct et les transformer</li>
+                    <li>Construction d'un dashboard PowerBI avec KPIs financiers clés</li>
+                    <li>Analyse technique avec candlestick et moyennes mobiles</li>
+                </ul>
+
+                <h6 class="fw-bold mb-3 mt-4">Technologies utilisées</h6>
+                <div class="mb-3">
+                    <span class="custom-badge badge-info">PowerBI</span>
+                    <span class="custom-badge badge-info">Python</span>
+                    <span class="custom-badge badge-info">Yfinance</span>
+                    <span class="custom-badge badge-info">Données boursières</span>
+                </div>
+
+                <h6 class="fw-bold mb-3 mt-4">Résultats & Conclusions</h6>
+                <div class="modal-results">
+                    <p><strong>Événement clé analysé :</strong> Abaissement des prévisions 2025 par Renault</p>
+                    <ul style="margin-top: 0.5rem;">
+                        <li><strong>Marge opérationnelle :</strong> Passage de 7% à 6,5% pour 2025</li>
+                        <li><strong>Leadership :</strong> Nomination d'un CEO intérimaire ajoutant de l'incertitude</li>
+                        <li><strong>Impact boursier :</strong> Analyse des mouvements de prix et volatilité avant/après annonce</li>
+                        <li><strong>KPIs du dashboard :</strong> Variation de cours, volumes d'échange, moyennes mobiles (20j, 50j, 200j)</li>
+                    </ul>
+                </div>
+
+                <div class="mt-4">
+                    <small class="text-muted">Projet académique - Janvier 2026</small>
+                </div>
+
+                <div class="mt-3">
+                    <a href="https://github.com/NathanChan1710/Renault-Financial-Analysis" target="_blank" rel="noopener" class="btn btn-sm btn-github">
+                        <i class="fab fa-github me-2"></i>Voir sur GitHub
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Modal Projet 5: Data Mining -->
     <div class="modal fade" id="projectModal5" tabindex="-1" aria-labelledby="projectModal5Label" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="projectModal5Label">Renault Financial Analysis</h5>
+                    <h5 class="modal-title" id="projectModal5Label">scoring de réacheteurs</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -658,7 +1126,7 @@
                         <span class="meta-badge">Data Visualization</span>
                         <div class="modal-date">Décembre 2025</div>
                     </div>
-                    <p>Analyse approfondie des données boursières de l'action Renault (composante du CAC40). Ce projet combine l'automatisation Python pour la récupération de données en direct avec la visualisation avancée dans PowerBI, permettant une analyse financière complète et actualisée.</p>
+                    <p>Création d'un programme informatique en R qui nettoie un jeu de données d'agence de voyage pour créer un score de réachat qui modélise la probabilité de réachat d'un client.</p>
 
                     <h6 class="fw-bold mb-3 mt-4">Méthodologie</h6>
                     <ul>
@@ -678,7 +1146,7 @@
 
                     <h6 class="fw-bold mb-3 mt-4">Résultats & Conclusions</h6>
                     <div class="modal-results">
-                        <p><strong>Événement clé analysé :</strong> Abaissement des prévisions 2025 par Renault</p>
+                        <p><strong>Événement clé analysé :</strong> Nombre de réacheteurs </p>
                         <ul style="margin-top: 0.5rem;">
                             <li><strong>Marge opérationnelle :</strong> Passage de 7% à 6,5% pour 2025</li>
                             <li><strong>Leadership :</strong> Nomination d'un CEO intérimaire ajoutant de l'incertitude</li>

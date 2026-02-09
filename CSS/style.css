@@ -1168,3 +1168,11 @@ html { scroll-behavior: smooth; }
 #dark-toggle:checked ~ .skill-item li {
     color: #E0E0DB;
 }
+
+.skill-icon {
+    color: #253551 !important;
+    font-size: 1.1rem;
+}
+.skill-category i {
+    color: #253551   !important;
+}
