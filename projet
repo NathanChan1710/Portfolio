@@ -1,0 +1,6 @@
+Parfait fait la meme chose pour un autre projet "Scoring réachat" un projet qui consite à faire un code R pour nettoyer une base de données d'une agence de voyage afin d'établir un score de réacheteurs en apprentissage non supervisé utilisant les packages R comme DescTools,BioStatR,FactoMineR. ce code permet d'avoir le score de réachat qui sera établie en binaire 0 et 1, pour etre analyser en powerbi. Image de la page : datamining_vacances.jpeg 
+image dans la popup : datamining_pbi.png
+lien github : "https://github.com/NathanChan1710/Scoring-r-achat"
+
+
+utilisant des packages R comme DescTools,BioStatR,FactoMineR. Ce script renvoie une base de données propre contenant le score de réachat transformé en binaire,
