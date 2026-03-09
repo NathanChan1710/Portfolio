@@ -1,1215 +1,1348 @@
 <!DOCTYPE html>
-<html lang="fr">
-
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nathan Chan | Data Scientist</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nathan Chan · Data Scientist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    :root {
+      --mono: 'Space Mono', monospace;
+      --dot:  'Share Tech Mono', monospace;
+      --red:  #e8302a;
+      --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Inter"', 'sans-serif'], // Ta police originale
-                    },
-                    colors: {
-                        // Ta palette de couleurs extraite de ton style.css
-                        cream: '#fefae0',      // --background-light
-                        olive: '#253551',      // --primary-color
-                        forest: '#253551',     // --secondary-color / Text
-                        earth: '#936025',      // --accent-color
-                        sand: '#45322E',       // --light-accent
-                    },
-                    animation: {
-                        'blob': 'blob 10s infinite',
-                        'fade-in': 'fadeIn 1s ease-out forwards',
-                    },
-                    keyframes: {
-                        blob: {
-                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    [data-theme="dark"] {
+      --bg:            #0a0a0a;
+      --bg2:           #111111;
+      --border:        #1e1e1e;
+      --border2:       #2e2e2e;
+      --text:          #f0f0f0;
+      --text2:         #888;
+      --text3:         #444;
+      --folder-bg:     #141414;
+      --folder-tab:    #1c1c1c;
+      --folder-cover:  #1a1a1a;
+      --folder-paper:  #111111;
+      --folder-shadow: rgba(0,0,0,0.8);
+      --nav-bg:        rgba(10,10,10,0.94);
+      --noise-op:      0.022;
+      --dot-color:     rgba(255,255,255,0.07);
+      --widget-bg:     rgba(18,18,18,0.96);
+      --tag-bg:        rgba(255,255,255,0.04);
+      --sk-chip-bg:    #161616;
+      --sk-chip-border:#252525;
+    }
 
-    <style>
-        /* Base Styles */
-        body { 
-            background-color: #fefae0; /* Cream background */
-            color: #253551;            /* Forest text */
-        }
-        
-        /* Card Styles - Clean & Minimalist */
-        .project-card {
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(0, 30, 255, 0.1);
-            backdrop-filter: blur(8px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .project-card:hover {
-            border-color: #253551;
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px -5px rgba(40, 54, 24, 0.1);
-            background: rgba(255, 255, 255, 0.9);
-        }
+    [data-theme="light"] {
+      --bg:            #f2f1ed;
+      --bg2:           #e8e7e1;
+      --border:        #d8d6d0;
+      --border2:       #c0beba;
+      --text:          #0e0e0e;
+      --text2:         #555;
+      --text3:         #9a9a9a;
+      --folder-bg:     #e8e7e1;
+      --folder-tab:    #d8d6d0;
+      --folder-cover:  #dddbd5;
+      --folder-paper:  #eeede8;
+      --folder-shadow: rgba(0,0,0,0.12);
+      --nav-bg:        rgba(242,241,237,0.94);
+      --noise-op:      0.035;
+      --dot-color:     rgba(0,0,0,0.06);
+      --widget-bg:     rgba(230,229,224,0.97);
+      --tag-bg:        rgba(0,0,0,0.04);
+      --sk-chip-bg:    #e4e3de;
+      --sk-chip-border:#d0ceca;
+    }
 
-        /* Animations */
-        .reveal { 
-            opacity: 0; 
-            transform: translateY(20px); 
-            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); 
-        }
-        .reveal.active { 
-            opacity: 1; 
-            transform: translateY(0); 
-        }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: var(--mono); font-size: 14px; line-height: 1.7;
+      overflow-x: hidden;
+      transition: background 0.5s ease, color 0.5s ease;
+    }
 
-        /* Modal Styles */
-        .modal-overlay {
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-            background: #253551; /* Forest green tint backdrop */
-            backdrop-filter: blur(4px);
-        }
-        .modal-overlay.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .modal-content {
-            transform: scale(0.95) translateY(20px);
-            transition: all 0.3s ease;
-        }
-        .modal-overlay.open .modal-content {
-            transform: scale(1) translateY(0);
-        }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none; z-index: 0;
+      transition: opacity 0.5s;
+    }
 
-        /* Selection color - CORRIGÉ avec texte blanc */
-        ::selection {
-            background: #936025;
-            color: #ffffff;
-        }
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 48px; border-bottom: 1px solid transparent;
+      transition: border-color 0.4s, background 0.4s;
+    }
+    nav.scrolled { border-color: var(--border); background: var(--nav-bg); backdrop-filter: blur(16px); }
 
-        /* Menu mobile */
-        .mobile-menu {
-            display: none;
-        }
-        .mobile-menu.active {
-            display: block;
-        }
-    </style>
-</head>
+    .nav-logo {
+      font-family: var(--dot); font-size: 15px; letter-spacing: 0.15em;
+      color: var(--text); text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-logo-dot {
+      width: 5px; height: 5px; background: var(--red); border-radius: 50%;
+      box-shadow: 0 0 6px var(--red);
+      animation: dotPulse 3s ease infinite;
+    }
+    @keyframes dotPulse {
+      0%,100% { opacity:1; transform: scale(1); }
+      50% { opacity:0.4; transform: scale(0.6); }
+    }
 
+    .nav-right { display: flex; align-items: center; gap: 24px; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      color: var(--text2); text-decoration: none;
+      font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+      transition: color var(--transition); position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px; background: var(--red);
+      transition: width var(--transition);
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { width: 100%; }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nathan Chan | Data Scientist</title>
+    /* NAV CONTROLS ROW */
+    .nav-controls { display: flex; align-items: center; gap: 12px; }
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    /* Language toggle */
+    .lang-toggle {
+      display: flex; align-items: center;
+      border: 1px solid var(--border2); border-radius: 4px;
+      overflow: hidden; font-size: 10px; letter-spacing: 0.15em;
+    }
+    .lang-btn {
+      padding: 5px 10px; cursor: pointer;
+      background: transparent; border: none; font-family: var(--mono);
+      font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text3); transition: all 0.25s; line-height: 1;
+    }
+    .lang-btn.active { background: var(--red); color: #fff; }
+    .lang-separator { width: 1px; height: 22px; background: var(--border2); }
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Inter"', 'sans-serif'], // Ta police originale
-                    },
-                    colors: {
-                        // Ta palette de couleurs extraite de ton style.css
-                        cream: '#fefae0',      // --background-light
-                        olive: '#253551',      // --primary-color
-                        forest: '#253551',     // --secondary-color / Text
-                        earth: '#936025',      // --accent-color
-                        sand: '#45322E',       // --light-accent
-                    },
-                    animation: {
-                        'blob': 'blob 10s infinite',
-                        'fade-in': 'fadeIn 1s ease-out forwards',
-                    },
-                    keyframes: {
-                        blob: {
-                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    /* Theme toggle */
+    .theme-toggle-wrap { display: flex; align-items: center; gap: 8px; }
+    .toggle-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); user-select: none; min-width: 34px; }
+    .theme-toggle { position: relative; width: 44px; height: 22px; cursor: pointer; flex-shrink: 0; }
+    .theme-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .toggle-track { position: absolute; inset: 0; background: var(--border2); border: 1px solid var(--border2); border-radius: 11px; transition: background 0.3s; }
+    .toggle-thumb { position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: var(--text); border-radius: 50%; transition: transform 0.3s ease; }
+    .theme-toggle input:checked ~ .toggle-thumb { transform: translateX(22px); }
 
-    <style>
-        /* Base Styles */
-        body { 
-            background-color: #fefae0; /* Cream background */
-            color: #253551;            /* Forest text */
-        }
-        
-        /* Card Styles - Clean & Minimalist */
-        .project-card {
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(0, 30, 255, 0.1);
-            backdrop-filter: blur(8px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .project-card:hover {
-            border-color: #253551;
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px -5px rgba(40, 54, 24, 0.1);
-            background: rgba(255, 255, 255, 0.9);
-        }
+    /* Hamburger */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; background: none; border: none; }
+    .hamburger span { display: block; width: 20px; height: 1.5px; background: var(--text); transition: all 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-        /* Animations */
-        .reveal { 
-            opacity: 0; 
-            transform: translateY(20px); 
-            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); 
-        }
-        .reveal.active { 
-            opacity: 1; 
-            transform: translateY(0); 
-        }
+    /* Mobile menu */
+    .mobile-menu {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--bg); z-index: 490; flex-direction: column;
+      justify-content: center; align-items: center; gap: 36px;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .mobile-menu.open { display: flex; opacity: 1; }
+    .mobile-menu a {
+      font-family: var(--dot); font-size: 28px; letter-spacing: 0.08em;
+      color: var(--text); text-decoration: none; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--red); }
+    .mobile-menu-controls { display: flex; align-items: center; gap: 16px; margin-top: 16px; }
 
-        /* Modal Styles */
-        .modal-overlay {
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-            background: #253551; /* Forest green tint backdrop */
-            backdrop-filter: blur(4px);
-        }
-        .modal-overlay.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .modal-content {
-            transform: scale(0.95) translateY(20px);
-            transition: all 0.3s ease;
-        }
-        .modal-overlay.open .modal-content {
-            transform: scale(1) translateY(0);
-        }
+    section { padding: 100px 48px; max-width: 1100px; margin: 0 auto; position: relative; z-index: 2; }
 
-        /* Selection color */
-        ::selection {
-            background: #dda15e;
-            color: #253551;
-        }
-    </style>
-</head>
-<body class="antialiased font-sans relative selection:bg-sand selection:text-forest">
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      justify-content: center; padding-top: 120px; position: relative;
+    }
 
-    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-sand/30 rounded-full mix-blend-multiply filter blur-[80px] animate-blob"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-olive/20 rounded-full mix-blend-multiply filter blur-[80px] animate-blob animation-delay-2000"></div>
-    </div>
+    #dotCanvas {
+      position: absolute; right: 0; top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.55; pointer-events: none;
+      width: 320px; height: 320px;
+    }
 
-    <nav class="fixed w-full z-40 top-0 bg-cream/80 backdrop-blur-md border-b border-olive/10">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-xl font-bold text-forest tracking-tight hover:text-earth transition-colors">
-                Nathan.<span class="text-earth">Data</span>
-            </a>
-            <div class="hidden md:flex space-x-8 text-sm font-medium">
-                <a href="#about" class="text-forest/70 hover:text-earth transition-colors²">À propos</a>
-                <a href="#projects" class="text-forest/70 hover:text-earth transition-colors">Projets</a>
-                <a href="#contact" class="text-forest/70 hover:text-earth transition-colors">Contact</a>
-            </div>
-        </div>
-    </nav>
+    .hero-label {
+      font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--red); margin-bottom: 28px;
+      opacity: 0; animation: fadeUp 0.8s ease 0.3s forwards;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-label::before { content: ''; display: inline-block; width: 6px; height: 6px; background: var(--red); border-radius: 50%; }
 
-    <section class="min-h-screen flex items-center justify-center relative z-10 px-6 pt-20">
-        <div class="max-w-4xl w-full text-center md:text-left">
-            <span class="inline-block py-1 px-3 rounded-full bg-olive/10 text-olive text-sm font-semibold mb-6 reveal">
-                Bonjour, je suis Nathan
-            </span>
-            <h1 class="text-5xl md:text-7xl font-extrabold text-forest mb-6 tracking-tight leading-tight reveal" style="transition-delay: 100ms;">
-                Transformer la donnée <br>
-                en <span class="text-earth relative inline-block">
-                    décisions
-                    <svg class="absolute w-full h-3 -bottom-1 left-0 text-sand -z-10" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="8" fill="none" /></svg>
-                </span>.
-            </h1>
-            <h2 class="text-xl md:text-2xl text-forest/70 mb-10 reveal max-w-2xl font-light" style="transition-delay: 200ms;">
-                Data Scientist & Analyst en formation. Je crée des ponts entre les mathématiques et le business.
-            </h2>
-            <div class="flex flex-col md:flex-row gap-4 reveal" style="transition-delay: 300ms;">
-                <a href="#projects" class="px-8 py-4 bg-forest text-cream font-medium rounded-lg hover:bg-olive transition-all duration-300 shadow-lg shadow-olive/20 text-center">
-                    Voir mes projets
-                </a>
-                <a href="#contact" class="px-8 py-4 bg-transparent border-2 border-forest/20 text-forest font-medium rounded-lg hover:border-forest hover:bg-forest/5 transition-all duration-300 text-center">
-                    Me contacter
-                </a>
-            </div>
-        </div>
-    </section>
+    .hero-name {
+      font-family: var(--dot); font-size: clamp(44px, 8vw, 96px);
+      line-height: 1; letter-spacing: -0.02em; margin-bottom: 20px;
+      opacity: 0; animation: fadeUp 0.8s ease 0.5s forwards;
+    }
+    .hero-title-wrap {
+      font-size: clamp(13px, 1.8vw, 20px); color: var(--text2);
+      margin-bottom: 40px; height: 2em;
+      display: flex; align-items: center; gap: 8px;
+      opacity: 0; animation: fadeUp 0.8s ease 0.7s forwards;
+    }
+    .hero-title-prefix { color: var(--text3); }
+    #typewriter { color: var(--text); border-right: 2px solid var(--red); padding-right: 3px; animation: blink 0.8s step-end infinite; }
+    .hero-desc {
+      max-width: 480px; color: var(--text2); font-size: 13px; line-height: 1.9;
+      margin-bottom: 48px; opacity: 0; animation: fadeUp 0.8s ease 0.9s forwards;
+    }
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.8s ease 1.1s forwards; }
 
-    <section id="about" class="py-24 relative z-10 px-6">
-        <div class="max-w-5xl mx-auto">
-            <div class="grid md:grid-cols-2 gap-16 items-center reveal">
-                <div class="relative order-2 md:order-1">
-                    <div class="relative z-10 rounded-2xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
-                        <img src="Image/Photo CV.jpg" alt="Nathan" class="w-full h-auto object-cover">
-                    </div>
-                    <div class="absolute inset-0 bg-earth rounded-2xl -rotate-3 -z-10 translate-x-4 translate-y-4"></div>
-                </div>
-                
-                <div class="order-1 md:order-2 space-y-6">
-                    <h2 class="section-title">À propos de moi</h2>
-                    <div class="w-16 h-1 bg-earth rounded-full"></div>
-                    
-                    <p class="text-forest/80 leading-relaxed">
-                        Actuellement étudiant en <strong>BUT Science des Données</strong> à l'IUT Paris Rives de Seine et en alternance chez <strong>Kantar Worldpanel</strong>.
-                    </p>
-                    <p class="text-forest/80 leading-relaxed">
-                        Mon objectif est simple : faire parler les chiffres. Que ce soit via l'analyse statistique, l'automatisation de processus ou la création de tableaux de bord, je cherche toujours à apporter de la clarté. <br> <strong>Je cherche une alternance pour Septembre 2026, continuant mes études en Master.</strong>
-                    </p>
+    .btn { display: inline-flex; align-items: center; padding: 12px 24px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; transition: all var(--transition); position: relative; overflow: hidden; border-radius: 4px; }
+    .btn-inner { position: relative; z-index: 1; }
+    .btn::before { content: ''; position: absolute; inset: 0; transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; z-index: 0; }
+    .btn:hover::before { transform: scaleX(1); }
+    .btn-primary { background: var(--red); color: #fff; border: 1px solid var(--red); }
+    .btn-primary::before { background: #c01f1a; }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border2); }
+    .btn-ghost::before { background: var(--red); }
+    .btn-ghost:hover { color: #fff; border-color: var(--red); }
 
-                    <div class="pt-4">
-                        <h3 class="text-sm font-bold text-forest uppercase tracking-wider mb-4">Mes outils préférés</h3>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-white border border-olive/20 rounded-md text-sm text-olive font-medium shadow-sm">Python </span>
-                            <span class="px-3 py-1 bg-white border border-olive/20 rounded-md text-sm text-olive font-medium shadow-sm">R </span>
-                            <span class="px-3 py-1 bg-white border border-olive/20 rounded-md text-sm text-olive font-medium shadow-sm">Power BI </span>
-                            <span class="px-3 py-1 bg-white border border-olive/20 rounded-md text-sm text-olive font-medium shadow-sm">SQL</span>
-                        </div>
-                        
-                        <p>
-                            <div class="social-small">
-                            <a href="https://github.com/NathanChan1710" aria-label="GitHub" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
-                            <a href="https://www.linkedin.com/in/nathan-chan-sing-man-560b10272/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="mailto:nathan.chansingman@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
-                            </div>
-                        </p>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    .section-label { font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--red); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .section-label::before { content: ''; display: inline-block; width: 4px; height: 4px; background: var(--red); border-radius: 50%; flex-shrink: 0; }
+    .section-label-text::before { content: '// '; }
 
+    .section-title { font-family: var(--dot); font-size: clamp(28px, 4vw, 52px); line-height: 1.1; margin-bottom: 56px; letter-spacing: -0.01em; }
 
-    <script>
-        // Modal Functions
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('open');
-            document.body.style.overflow = 'hidden'; 
-        }
-        
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('open');
-            document.body.style.overflow = 'auto'; 
-        }
+    .divider {
+      width: calc(100% - 96px); height: 1px;
+      background: var(--border); margin: 0 auto;
+      position: relative; z-index: 2;
+      transition: background 0.5s;
+    }
+    .divider::before, .divider::after {
+      content: ''; position: absolute; top: -3px;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--border); transition: background 0.5s;
+    }
+    .divider::before { left: 0; }
+    .divider::after  { right: 0; }
 
-        document.addEventListener('keydown', function(event) {
-            if (event.key === "Escape") {
-                document.querySelectorAll('.modal-overlay').forEach(modal => {
-                    modal.classList.remove('open');
-                    document.body.style.overflow = 'auto';
-                });
-            }
-        });
+    /* ── ABOUT ── */
+    #about .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .about-text p { color: var(--text2); margin-bottom: 20px; line-height: 2; }
+    .about-text p strong { color: var(--text); }
+    .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border); transition: border-color 0.5s; }
+    .stat-row:first-child { border-top: 1px solid var(--border); }
+    .stat-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); }
+    .stat-value { font-family: var(--dot); font-size: 22px; color: var(--text); }
+    .stat-value span { font-size: 12px; color: var(--red); margin-left: 4px; }
 
-        // Scroll Animation
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, { threshold: 0.1 });
+    /* ── NOTHING WIDGET ── */
+    .nothing-widget {
+      position: fixed; bottom: 28px; right: 28px; z-index: 400;
+      width: 140px;
+      background: var(--widget-bg);
+      border: 1px solid var(--border2);
+      border-radius: 18px;
+      padding: 12px 14px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease 2s, transform 0.6s ease 2s, border-color 0.3s;
+      pointer-events: none;
+    }
+    .nothing-widget.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .nothing-widget:hover { border-color: var(--red); }
+    .nw-time { font-family: var(--dot); font-size: 26px; line-height: 1; color: var(--text); letter-spacing: 0.02em; margin-bottom: 6px; }
+    .nw-status { display: flex; align-items: center; gap: 6px; }
+    .nw-dot { width: 5px; height: 5px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 6px #22c55e; animation: dotPulse 2s ease infinite; }
+    .nw-label { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); }
+    .nw-sub { font-size: 9px; color: var(--text3); letter-spacing: 0.05em; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+    .nw-sub span { color: var(--red); }
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    </script>
-</body>
+    /* ── TIMELINE ── */
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 1px; background: var(--border); transition: background 0.5s; }
+    .tl-item {
+      position: relative; display: grid; grid-template-columns: 150px 1fr;
+      gap: 28px; align-items: start; padding: 28px 0;
+      border-bottom: 1px solid var(--border); transition: border-color 0.5s;
+    }
+    .tl-item:last-child { border-bottom: none; }
+    .tl-item::before {
+      content: ''; position: absolute; left: -36px; top: 36px;
+      width: 9px; height: 9px; background: var(--bg); border: 2px solid var(--text3);
+      border-radius: 50%; transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+    }
+    .tl-item:hover::before { border-color: var(--red); background: var(--red); box-shadow: 0 0 8px var(--red); }
+    .tl-item::after { content: ''; position: absolute; left: -31px; top: 40px; width: 31px; height: 1px; background: var(--border); transition: background 0.3s; }
+    .tl-item:hover::after { background: var(--red); }
+    .tl-meta { padding-top: 4px; }
+    .tl-date { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 8px; display: block; }
+    .tl-type { display: inline-block; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); color: var(--text3); border-radius: 3px; }
+    .tl-org { font-family: var(--dot); font-size: 17px; color: var(--text); margin-bottom: 4px; line-height: 1.2; }
+    .tl-role { font-size: 12px; color: var(--red); letter-spacing: 0.05em; margin-bottom: 10px; }
+    .tl-desc { font-size: 12px; color: var(--text2); line-height: 1.85; max-width: 560px; }
+    .tl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .tl-tag { font-size: 10px; letter-spacing: 0.1em; padding: 3px 9px; border: 1px solid var(--border); color: var(--text3); border-radius: 3px; }
 
+    /* ── SKILLS — REDESIGN (no bars) ── */
+    .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
+    .skills-grid-bottom { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); margin-top: 1px; }
+    .sk-block { background: var(--bg); padding: 28px 24px; position: relative; overflow: hidden; transition: background var(--transition); }
+    .sk-block:hover { background: var(--bg2); }
+    .sk-block::after { content: ''; position: absolute; bottom: 0; left: 0; height: 2px; width: 0; background: var(--red); transition: width 0.4s ease; }
+    .sk-block:hover::after { width: 100%; }
 
+    .sk-glyph { width: 26px; height: 26px; margin-bottom: 14px; display: block; opacity: 0.7; transition: opacity 0.3s; color: var(--text); }
+    .sk-block:hover .sk-glyph { opacity: 1; }
 
+    .sk-label { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--red); margin-bottom: 8px; display: block; }
+    .sk-title { font-family: var(--dot); font-size: 14px; color: var(--text); margin-bottom: 16px; }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <meta name="description" content="Bienvenue sur le portfolio de Nathan Chan Sing Man, Analyste de données passionné. Découvrez mes projets, compétences et expériences professionnelles.">
-    <meta name="keywords" content="Nathan Chan Sing Man, portfolio, IUT Paris Rives de Seines, BUT Science des données, Rstudio, R, projets web, Pyhton, HTML, CSS, JavaScript">
-    <meta name="author" content="Nathan Chan Sing Man">
-    <title>Nathan Chan | Data Scientist & Analyste IA - Portfolio BUT SD</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="CSS_bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="CSS/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Anton&display=swap" rel="stylesheet">
+    /* Tech chips — visually interesting, no hierarchy implied */
+    .sk-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    .sk-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 6px 10px; background: var(--sk-chip-bg);
+      border: 1px solid var(--sk-chip-border);
+      border-radius: 6px; font-size: 11px; color: var(--text2);
+      transition: all 0.25s; cursor: default; user-select: none;
+      letter-spacing: 0.04em;
+    }
+    .sk-chip::before { content: ''; width: 5px; height: 5px; background: var(--red); border-radius: 50%; opacity: 0; transition: opacity 0.25s; flex-shrink: 0; }
+    .sk-block:hover .sk-chip { border-color: var(--border2); color: var(--text); }
+    .sk-block:hover .sk-chip::before { opacity: 0.6; }
+    .sk-block:hover .sk-chip:hover { border-color: var(--red); background: rgba(232,48,42,0.07); color: var(--text); }
+    .sk-block:hover .sk-chip:hover::before { opacity: 1; }
+
+    .sk-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+    .sk-pill { font-size: 11px; letter-spacing: 0.08em; padding: 6px 14px; border: 1px solid var(--border); color: var(--text2); transition: all 0.3s; border-radius: 20px; }
+    .sk-block:hover .sk-pill { border-color: var(--border2); color: var(--text); }
+
+    /* ── PROJECTS GRID ── */
+    .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; gap: 24px; }
+    .folder-card { position: relative; cursor: pointer; margin-top: 16px; display: flex; flex-direction: column; }
+    .folder-tab {
+      position: absolute; top: -13px; left: 16px;
+      width: 70px; height: 14px;
+      background: var(--folder-tab); border: 1px solid var(--border); border-bottom: none;
+      border-radius: 5px 5px 0 0;
+      transition: width 0.35s ease, background 0.35s ease, border-color 0.35s;
+    }
+    .folder-body {
+      background: var(--folder-bg); border: 1px solid var(--border);
+      padding: 24px 20px 20px; position: relative;
+      flex: 1; display: flex; flex-direction: column;
+      border-radius: 0 4px 4px 4px;
+      transition: transform 0.35s cubic-bezier(0.34, 1.3, 0.64, 1), box-shadow 0.35s ease, background 0.5s, border-color 0.5s;
+    }
+    .folder-body::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--border); transition: background 0.3s; border-radius: 4px 4px 0 0; }
+    .folder-card:hover .folder-tab { width: 110px; background: var(--red); border-color: var(--red); }
+    .folder-card:hover .folder-body { transform: translateY(-8px); box-shadow: 0 20px 48px var(--folder-shadow); border-color: var(--border2); }
+    .folder-card:hover .folder-body::before { background: var(--red); }
+    .folder-card.opening .folder-tab { width: 140px; }
+    .folder-card.opening .folder-body { transform: translateY(-16px) rotateX(8deg); transform-origin: bottom center; box-shadow: 0 32px 64px var(--folder-shadow); }
+
+    .folder-num { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--red); margin-bottom: 12px; display: block; }
+    .folder-title { font-family: var(--dot); font-size: 14px; line-height: 1.4; color: var(--text); margin-bottom: 10px; transition: color 0.3s; }
+    .folder-card:hover .folder-title { color: var(--red); }
+    .folder-desc { font-size: 12px; color: var(--text2); line-height: 1.75; margin-bottom: 14px; flex: 1; }
+    .folder-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; }
+    .ftag { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); padding: 3px 8px; border: 1px solid var(--border); transition: border-color 0.3s, color 0.3s; border-radius: 3px; }
+    .folder-card:hover .ftag { border-color: var(--border2); color: var(--text2); }
+    .folder-meta { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 12px; margin-top: auto; transition: border-color 0.5s; }
+    .folder-date { font-size: 10px; color: var(--text3); letter-spacing: 0.1em; }
+    .folder-open-hint { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); transition: color 0.3s; }
+    .folder-card:hover .folder-open-hint { color: var(--red); }
+
+    /* ── FOLDER MODAL ── */
+    .folder-modal { position: fixed; inset: 0; z-index: 800; display: flex; align-items: center; justify-content: center; pointer-events: none; perspective: 1200px; }
+    .folder-modal.active { pointer-events: all; }
+    .fm-backdrop { position: fixed; inset: 0; z-index: 0; background: rgba(0,0,0,0); backdrop-filter: blur(0px); transition: background 0.5s ease, backdrop-filter 0.5s ease; }
+    .folder-modal.active .fm-backdrop { background: rgba(0,0,0,0.82); backdrop-filter: blur(16px); }
+    .fm-scene { position: relative; z-index: 1; width: min(680px, 92vw); transform-style: preserve-3d; transform: scale(0.3) rotateX(40deg) translateY(120px); opacity: 0; transition: none; }
+    .folder-modal.active .fm-scene { animation: folderOpen 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .folder-modal.closing .fm-scene { animation: folderClose 0.4s cubic-bezier(0.55, 0, 1, 0.45) forwards; }
+    @keyframes folderOpen { 0%{transform:scale(0.3) rotateX(40deg) translateY(120px);opacity:0} 40%{opacity:1} 70%{transform:scale(1.02) rotateX(-3deg) translateY(-8px);opacity:1} 100%{transform:scale(1) rotateX(0deg) translateY(0);opacity:1} }
+    @keyframes folderClose { 0%{transform:scale(1) rotateX(0deg);opacity:1} 100%{transform:scale(0.2) rotateX(50deg) translateY(140px);opacity:0} }
+    .fm-cover-wrap { position: relative; width: 100%; height: 0; transform-style: preserve-3d; }
+    .fm-tab { position: absolute; bottom: 0; left: 20px; width: 100px; height: 16px; background: var(--red); border-radius: 5px 5px 0 0; z-index: 5; }
+    .fm-tab::after { content: attr(data-num); position: absolute; top: 2px; left: 10px; font-size: 9px; letter-spacing: 0.2em; color: rgba(255,255,255,0.7); font-family: var(--mono); }
+    .fm-cover { position: relative; width: 100%; background: var(--folder-cover); border: 1px solid var(--border2); border-bottom: none; padding: 18px 28px 16px; transform-origin: bottom center; transform-style: preserve-3d; display: flex; align-items: center; justify-content: space-between; z-index: 4; }
+    .folder-modal.active .fm-cover { animation: coverFlip 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both; }
+    .folder-modal.closing .fm-cover { animation: coverFlipClose 0.3s ease-in forwards; }
+    @keyframes coverFlip { 0%{transform:rotateX(0deg)} 100%{transform:rotateX(-178deg)} }
+    @keyframes coverFlipClose { 0%{transform:rotateX(-178deg)} 100%{transform:rotateX(0deg)} }
+    .fm-cover-label { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--red); }
+    .fm-cover-title { font-family: var(--dot); font-size: 18px; color: var(--text); }
+    .fm-cover::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--red); }
+    .fm-paper { background: var(--folder-paper); border: 1px solid var(--border2); border-top: none; position: relative; overflow: hidden; max-height: 72vh; overflow-y: auto; }
+    .fm-paper::-webkit-scrollbar { width: 3px; }
+    .fm-paper::-webkit-scrollbar-thumb { background: var(--red); }
+    .fm-paper::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 27px, var(--border) 27px, var(--border) 28px); opacity: 0.25; pointer-events: none; }
+    .fm-paper-inner { position: relative; z-index: 1; padding: 32px 36px 36px; transform: translateY(30px); opacity: 0; }
+    .folder-modal.active .fm-paper-inner { animation: paperSlide 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.55s both; }
+    .folder-modal.closing .fm-paper-inner { animation: paperSlideOut 0.25s ease-in forwards; }
+    @keyframes paperSlide { from{transform:translateY(30px);opacity:0} to{transform:translateY(0);opacity:1} }
+    @keyframes paperSlideOut { from{transform:translateY(0);opacity:1} to{transform:translateY(20px);opacity:0} }
+    .fm-close { position: absolute; top: 14px; right: 18px; z-index: 10; background: none; border: none; cursor: pointer; color: var(--text3); font-size: 18px; font-family: var(--mono); transition: color 0.3s; line-height: 1; }
+    .fm-close:hover { color: var(--red); }
+    .fm-label { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--red); margin-bottom: 12px; }
+    .fm-title { font-family: var(--dot); font-size: 24px; color: var(--text); line-height: 1.25; margin-bottom: 24px; }
+    .fm-section { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text3); margin-top: 20px; margin-bottom: 10px; }
+    .fm-section::before { content: '— '; color: var(--red); }
+    .fm-paper-inner p, .fm-paper-inner li { font-size: 13px; color: var(--text2); line-height: 1.85; margin-bottom: 5px; }
+    .fm-paper-inner ul { padding-left: 18px; }
+    .fm-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .fm-tag { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--red); padding: 4px 12px; border: 1px solid rgba(232,48,42,0.35); border-radius: 3px; }
+    .fm-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--border); }
+    .fm-date { font-size: 11px; color: var(--text3); letter-spacing: 0.1em; }
+    .fm-github { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text); text-decoration: none; border: 1px solid var(--border2); padding: 9px 18px; border-radius: 4px; transition: all var(--transition); }
+    .fm-github:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── CONTACT ── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; width: 100%; }
+    .contact-left p { font-size: 13px; color: var(--text2); line-height: 2; max-width: 380px; margin-bottom: 36px; }
+    .contact-link { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--text); transition: color var(--transition); }
+    .contact-link:first-child { border-top: 1px solid var(--border); }
+    .contact-link:hover { color: var(--red); }
+    .contact-link-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); margin-bottom: 4px; }
+    .contact-link-value { font-family: var(--dot); font-size: 14px; }
+    .contact-link-arrow { font-size: 14px; transition: transform 0.3s; }
+    .contact-link:hover .contact-link-arrow { transform: translate(4px, -4px); }
+    .contact-status { display: flex; align-items: center; gap: 12px; margin-bottom: 36px; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 10px #22c55e; animation: dotPulse 2s ease infinite; }
+    .status-text { font-size: 12px; color: var(--text2); letter-spacing: 0.1em; }
+    .status-text strong { color: var(--text); }
+    .contact-info-block { padding: 28px; border: 1px solid var(--border); position: relative; overflow: hidden; border-radius: 4px; }
+    .contact-info-block::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 100%; background: var(--red); }
+    .info-row { margin-bottom: 18px; }
+    .info-row:last-child { margin-bottom: 0; }
+    .info-label { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text3); margin-bottom: 4px; }
+    .info-value { font-size: 13px; color: var(--text); }
+
+    footer { border-top: 1px solid var(--border); padding: 24px 48px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; }
+    .footer-logo { font-family: var(--dot); font-size: 13px; color: var(--text3); letter-spacing: 0.15em; display: flex; align-items: center; gap: 6px; }
+    .footer-logo-dot { width: 4px; height: 4px; background: var(--red); border-radius: 50%; }
+    .footer-copy { font-size: 11px; color: var(--text3); letter-spacing: 0.1em; }
+    .footer-nothing { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text3); opacity: 0.5; }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
+    @keyframes blink  { 0%,100%{border-color:var(--red)}50%{border-color:transparent} }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE — TABLET (≤900px)
+    ══════════════════════════════════════ */
+    @media (max-width: 900px) {
+      nav { padding: 14px 24px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      section { padding: 72px 24px; }
+      #about .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 36px; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .skills-grid-bottom { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: auto; }
+      .tl-item { grid-template-columns: 1fr; gap: 8px; }
+      #dotCanvas { display: none; }
+      .nothing-widget { display: none; }
+      footer { flex-direction: column; gap: 8px; text-align: center; }
+      .footer-nothing { display: none; }
+    }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE — MOBILE (≤600px)
+    ══════════════════════════════════════ */
+    @media (max-width: 600px) {
+      nav { padding: 12px 16px; }
+      .nav-controls { gap: 8px; }
+      .toggle-label { display: none; }
+
+      section { padding: 60px 16px; }
+
+      /* Hero compact */
+      #hero { min-height: auto; padding-top: 100px; padding-bottom: 60px; }
+      .hero-desc br { display: none; }
+      .hero-cta { flex-direction: column; }
+      .hero-cta .btn { justify-content: center; }
+
+      /* Skills — full width */
+      .skills-grid { grid-template-columns: 1fr; }
+      .skills-grid-bottom { grid-template-columns: 1fr; }
+
+      /* Projects — single col */
+      .projects-grid { grid-template-columns: 1fr; }
+
+      /* Timeline */
+      .timeline { padding-left: 18px; }
+      .tl-item::before { left: -22px; }
+      .tl-item::after { left: -17px; width: 17px; }
+
+      /* Contact */
+      .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+      .contact-left p { max-width: 100%; }
+
+      /* Footer */
+      footer { padding: 20px 16px; gap: 6px; }
+
+      /* Divider */
+      .divider { width: calc(100% - 32px); }
+
+      /* Section title smaller */
+      .section-title { margin-bottom: 36px; }
+
+      /* Folder modal */
+      .fm-paper-inner { padding: 20px 20px 24px; }
+      .fm-title { font-size: 18px; }
+      .fm-footer { flex-direction: column; gap: 12px; align-items: flex-start; }
+    }
+
+    /* ══════════════════════════════════════
+       MOBILE NAV CONTROLS compact
+    ══════════════════════════════════════ */
+    @media (max-width: 400px) {
+      .lang-btn { padding: 4px 7px; }
+      .hero-name { font-size: 38px; }
+    }
+  </style>
 </head>
 <body>
-    <!-- Checkbox cachée -->
-    <input type="checkbox" id="dark-toggle">
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <span class="navbar-brand">Nathan Chan</span>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- Bouton d'activation -->
-            <label for="dark-toggle">
-                <i class="fa-solid fa-moon"></i>
-            </label>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#home">Accueil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">À propos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#skills">Compétences</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#projects">Projets</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#experience">Expérience</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-
-    <!-- Skills Section -->
-<section id="skills" class="section">
-    <div class="container">
-        <h2 class="section-title">Compétences</h2>
-        <div class="row">
-
-            <!-- Programmation -->
-            <div class="col-md-6 mb-4">
-                <div class="skill-item fade-in">
-                    <div class="skill-category">
-                        <i class="fas fa-code"></i> Programmation
-                    </div>
-                    <ul class="list-unstyled mb-0">
-                        <li><i class="fab fa-python skill-icon me-2"></i>Python</li>
-                        <li><i class="fab fa-r-project skill-icon me-2"></i>R</li>
-                        <li><i class="fa-solid fa-database skill-icon me-2"></i>SQL</li>
-                        <li><i class="fa-solid fa-cog skill-icon me-2"></i>SAS</li>
-                        <li><i class="fab fa-html5 skill-icon me-2"></i>HTML/CSS</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Outils de visualisation -->
-            <div class="col-md-6 mb-4">
-                <div class="skill-item fade-in">
-                    <div class="skill-category">
-                        <i class="fas fa-chart-bar"></i> Outils de visualisation
-                    </div>
-                    <ul class="list-unstyled mb-0">
-                        <li><i class="fas fa-file-excel skill-icon me-2"></i>Excel</li>
-                        <li><i class="fa-solid fa-chart-simple skill-icon me-2"></i>Power BI</li>
-                        <li><i class="fa-solid fa-database skill-icon me-2"></i>Dataiku</li>
-                        <li><i class="fa-solid fa-bolt skill-icon me-2"></i>Streamlit</li>
-                        <li><i class="fab fa-r-project skill-icon me-2"></i>Shiny</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Data Science -->
-            <div class="col-md-6 mb-4">
-                <div class="skill-item fade-in">
-                    <div class="skill-category">
-                        <i class="fas fa-database"></i> Data Science
-                    </div>
-                    <ul class="list-unstyled mb-0">
-                        <li><i class="fa-solid fa-brain skill-icon me-2"></i>Machine Learning & Deep Learning</li>
-                        <li><i class="fa-solid fa-chart-pie skill-icon me-2"></i>Dataviz & Business Intelligence</li>
-                        <li><i class="fa-solid fa-chart-line skill-icon icon-analytics me-2"></i>Analyse statistique avancée</li>
-                        <li><i class="fa-solid fa-gears skill-icon me-2"></i>ETL (Extraction, Transformation, Chargement)</li>
-                        <li><i class="fa-solid fa-flask skill-icon me-2"></i>Expérimentation & Modélisation</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Soft Skills -->
-            <div class="col-md-6 mb-4">
-                <div class="skill-item fade-in">
-                    <div class="skill-category">
-                        <i class="fas fa-users"></i> Soft Skills
-                    </div>
-                    <ul class="list-unstyled mb-0">
-                        <li><i class="fa-solid fa-users skill-icon me-2"></i>Travail en équipe</li>
-                        <li><i class="fa-solid fa-microphone skill-icon me-2"></i>Aisance à l’oral</li>
-                        <li><i class="fa-solid fa-file-alt skill-icon me-2"></i>Rédaction de rapports & documentation</li>
-                        <li><i class="fa-solid fa-landmark skill-icon me-2"></i>Bases en économie & gestion</li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <div class="nav-logo-dot"></div>
+    NC.
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about" data-i18n="nav_about">About</a></li>
+      <li><a href="#parcours" data-i18n="nav_parcours">Journey</a></li>
+      <li><a href="#skills" data-i18n="nav_skills">Stack</a></li>
+      <li><a href="#projects" data-i18n="nav_projects">Projects</a></li>
+      <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+    </ul>
+    <div class="nav-controls">
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN</button>
+        <div class="lang-separator"></div>
+        <button class="lang-btn" id="btnFR" onclick="setLang('fr')">FR</button>
+      </div>
+      <div class="theme-toggle-wrap">
+        <span class="toggle-label" id="themeLabel">Light</span>
+        <label class="theme-toggle">
+          <input type="checkbox" id="themeCheckbox" />
+          <div class="toggle-track"></div>
+          <div class="toggle-thumb"></div>
+        </label>
+      </div>
     </div>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" data-i18n="nav_about" onclick="closeMobileMenu()">About</a>
+  <a href="#parcours" data-i18n="nav_parcours" onclick="closeMobileMenu()">Journey</a>
+  <a href="#skills" data-i18n="nav_skills" onclick="closeMobileMenu()">Stack</a>
+  <a href="#projects" data-i18n="nav_projects" onclick="closeMobileMenu()">Projects</a>
+  <a href="#contact" data-i18n="nav_contact" onclick="closeMobileMenu()">Contact</a>
+  <div class="mobile-menu-controls">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btnEN2" onclick="setLang('en')">EN</button>
+      <div class="lang-separator"></div>
+      <button class="lang-btn" id="btnFR2" onclick="setLang('fr')">FR</button>
+    </div>
+    <div class="theme-toggle-wrap">
+      <label class="theme-toggle">
+        <input type="checkbox" id="themeCheckbox2" />
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+  </div>
+</div>
+
+<!-- NOTHING WIDGET -->
+<div class="nothing-widget" id="nothingWidget">
+  <div class="nw-time" id="nwTime">--:--</div>
+  <div class="nw-status">
+    <div class="nw-dot"></div>
+    <span class="nw-label" data-i18n="widget_available">Available</span>
+  </div>
+  <div class="nw-sub">Open to work · <span>Sept 2026</span></div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="dotCanvas" width="320" height="320"></canvas>
+
+  <p class="hero-label" data-i18n="hero_label">Data Scientist · Apprentice</p>
+  <h1 class="hero-name">Nathan Chan</h1>
+  <div class="hero-title-wrap">
+    <span class="hero-title-prefix">></span>
+    <span id="typewriter"></span>
+  </div>
+  <p class="hero-desc" data-i18n="hero_desc">
+    Student in Data Science at IUT Paris Rives de Seine,<br>
+    apprentice at Kantar Worldpanel. I turn raw data<br>
+    into informed decisions — through analysis, code, and visualization.
+  </p>
+  <div class="hero-cta">
+    <a href="#projects" class="btn btn-primary"><span class="btn-inner" data-i18n="hero_cta_projects">View projects ↗</span></a>
+    <a href="#contact" class="btn btn-ghost"><span class="btn-inner" data-i18n="hero_cta_contact">Get in touch</span></a>
+  </div>
 </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="section">
-        <div class="container">
-            <h2 class="section-title">Mes Projets</h2>
-            
-            <div class="row">
+<div class="divider reveal"></div>
 
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label reveal"><span class="section-label-text" data-i18n="projects_label">Selected works</span></p>
+  <h2 class="section-title reveal" data-i18n="projects_title">Projects</h2>
+  <div class="projects-grid">
+    <div class="folder-card reveal" onclick="openFolder(this,'sncf')">
+      <div class="folder-tab"></div>
+      <div class="folder-body">
+        <span class="folder-num">01 —</span>
+        <h3 class="folder-title" data-i18n="proj_sncf_title">Network & Infrastructure Analysis SNCF</h3>
+        <p class="folder-desc" data-i18n="proj_sncf_desc">Exploring the link between network data and incidents. Power BI dashboard for SNCF Réseau.</p>
+        <div class="folder-tags"><span class="ftag">R</span><span class="ftag">Power BI</span><span class="ftag">Network</span></div>
+        <div class="folder-meta"><span class="folder-date">Jan 2026</span><span class="folder-open-hint" data-i18n="open_hint">Open ↗</span></div>
+      </div>
+    </div>
+    <div class="folder-card reveal reveal-delay-1" onclick="openFolder(this,'renault')">
+      <div class="folder-tab"></div>
+      <div class="folder-body">
+        <span class="folder-num">02 —</span>
+        <h3 class="folder-title">Renault Financial Analysis</h3>
+        <p class="folder-desc" data-i18n="proj_renault_desc">Stock data analysis for Renault (CAC40). Python pipeline + financial Power BI dashboard.</p>
+        <div class="folder-tags"><span class="ftag">Python</span><span class="ftag">Power BI</span><span class="ftag">Finance</span></div>
+        <div class="folder-meta"><span class="folder-date">Jan 2026</span><span class="folder-open-hint" data-i18n="open_hint">Open ↗</span></div>
+      </div>
+    </div>
+    <div class="folder-card reveal reveal-delay-2" onclick="openFolder(this,'scoring')">
+      <div class="folder-tab"></div>
+      <div class="folder-body">
+        <span class="folder-num">03 —</span>
+        <h3 class="folder-title" data-i18n="proj_scoring_title">Repurchase Scoring Model</h3>
+        <p class="folder-desc" data-i18n="proj_scoring_desc">Unsupervised R modeling. Repurchase probability scoring for a travel agency.</p>
+        <div class="folder-tags"><span class="ftag">R</span><span class="ftag">ML</span><span class="ftag">Power BI</span></div>
+        <div class="folder-meta"><span class="folder-date">Dec 2025</span><span class="folder-open-hint" data-i18n="open_hint">Open ↗</span></div>
+      </div>
+    </div>
+    <div class="folder-card reveal reveal-delay-3" onclick="openFolder(this,'dataviz')">
+      <div class="folder-tab"></div>
+      <div class="folder-body">
+        <span class="folder-num">04 —</span>
+        <h3 class="folder-title" data-i18n="proj_dataviz_title">DataViz Contest — 1st Prize</h3>
+        <p class="folder-desc" data-i18n="proj_dataviz_desc">Interactive weather dashboard. 1st prize IUT + national Power BI finalist.</p>
+        <div class="folder-tags"><span class="ftag">Power BI</span><span class="ftag">DAX</span><span class="ftag">Excel</span></div>
+        <div class="folder-meta"><span class="folder-date">May 2024</span><span class="folder-open-hint" data-i18n="open_hint">Open ↗</span></div>
+      </div>
+    </div>
+    <div class="folder-card reveal reveal-delay-4" onclick="openFolder(this,'web')">
+      <div class="folder-tab"></div>
+      <div class="folder-body">
+        <span class="folder-num">05 —</span>
+        <h3 class="folder-title" data-i18n="proj_web_title">Automated Web Data Collection</h3>
+        <p class="folder-desc" data-i18n="proj_web_desc">Python system collecting Paris business data via data.gouv.fr and Google Maps APIs.</p>
+        <div class="folder-tags"><span class="ftag">Python</span><span class="ftag">API REST</span><span class="ftag">Pandas</span></div>
+        <div class="folder-meta"><span class="folder-date">Mar 2025</span><span class="folder-open-hint" data-i18n="open_hint">Open ↗</span></div>
+      </div>
+    </div>
+    <div class="folder-card reveal reveal-delay-5" onclick="openFolder(this,'benchmark')">
+      <div class="folder-tab"></div>
+      <div class="folder-body">
+        <span class="folder-num">06 —</span>
+        <h3 class="folder-title" data-i18n="proj_bench_title">Benchmark Database Automation</h3>
+        <p class="folder-desc" data-i18n="proj_bench_desc">R solution automating benchmark base updates at Kantar Worldpanel.</p>
+        <div class="folder-tags"><span class="ftag">R</span><span class="ftag">RMarkdown</span><span class="ftag">Auto</span></div>
+        <div class="folder-meta"><span class="folder-date">Apr 2025</span><span class="folder-open-hint" data-i18n="open_hint">Open ↗</span></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-                <!-- Projet 6: SAE SNCF -->
-                <div class="col-md-4 mb-4">
-                    <div class="project-card-clickable" data-bs-toggle="modal" data-bs-target="#projectModal6">
-                        <div class="project-image">
-                            <img src="Image/sncf.png" alt="SAE SNCF">
-                            <div class="project-overlay">
-                                <i class="fas fa-eye"></i>
-                                <span>Voir le projet</span>
-                            </div>
-                        </div>
-                        <div class="project-card-content">
-                            <div class="project-card-top">
-                                <h4 class="project-card-title">Analyse Réseaux et Infrastructure pour la SNCF</h4>
-                            </div>
-                            <p class="project-card-desc">Ce projet vise à améliorer la compréhension des incients de la SNCF. En explorant comment l’analyse conjointe des données de réseaux et des infrastructures peuvent être liée.</p>
-                            <div class="project-cta"><a class="btn-outline" data-bs-toggle="modal" data-bs-target="#projectModal6">En savoir plus</a></div>
-                            <div class="project-tags">
-                                <span class="custom-badge badge-info">R</span>
-                                <span class="custom-badge badge-info">PowerBI</span>
-                            </div>
-                            <small class="text-muted d-block mt-3">Janvier 2026</small>
-                            <div class="mt-2">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="divider reveal"></div>
 
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label reveal"><span class="section-label-text" data-i18n="about_label">About</span></p>
+  <h2 class="section-title reveal" data-i18n="about_title">Who am I?</h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p data-i18n="about_p1">Currently an apprentice at <strong>Kantar Worldpanel</strong>, I develop R solutions to automate data workflows and produce actionable insights.</p>
+      <p data-i18n="about_p2">I'm looking for an <strong>apprenticeship starting September 2026</strong> to continue my Master's studies, with a clear ambition: going further in applied data science.</p>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <div class="stat-row"><span class="stat-label" data-i18n="stat_exp">Experience</span><span class="stat-value">2<span data-i18n="stat_years">yrs</span></span></div>
+      <div class="stat-row"><span class="stat-label" data-i18n="stat_proj">Projects</span><span class="stat-value">6<span>+</span></span></div>
+      <div class="stat-row"><span class="stat-label" data-i18n="stat_avail">Available</span><span class="stat-value" style="font-size:15px">September<span>2026</span></span></div>
+      <div class="stat-row"><span class="stat-label" data-i18n="stat_loc">Location</span><span class="stat-value" style="font-size:15px">Paris<span>FR</span></span></div>
+    </div>
+  </div>
+</section>
 
+<div class="divider reveal"></div>
 
-                <!-- Projet 4: Renault Financial Analysis -->
-                <div class="col-md-4 mb-4">
-                    <div class="project-card-clickable" data-bs-toggle="modal" data-bs-target="#projectModal4">
-                        <div class="project-image">
-                            <img src="Image/renault-groupe.jpeg" alt="Renault Financial Analysis">
-                            <div class="project-overlay">
-                                <i class="fas fa-eye"></i>
-                                <span>Voir le projet</span>
-                            </div>
-                        </div>
-                        <div class="project-card-content">
-                            <div class="project-card-top">
-                                <h4 class="project-card-title">Anaylse Financière Renault</h4>
-                            </div>
-                            <p class="project-card-desc">Analyse des données boursières de l'action Renault (CAC40) avec récupération en direct via Python. Dashboard PowerBI avec KPIs, candlestick et analyse des prévisions 2025.</p>
-                            <div class="project-cta"><a class="btn-outline" data-bs-toggle="modal" data-bs-target="#projectModal4">En savoir plus</a></div>
-                            <div class="project-tags">
-                                <span class="custom-badge badge-info">PowerBI</span>
-                                <span class="custom-badge badge-info">Python</span>
-                                <span class="custom-badge badge-info">Yfinance</span>
-                            </div>
-                            <small class="text-muted d-block mt-3">Janvier 2026</small>
-                            <div class="mt-2">
-                                <a href="https://github.com/NathanChan1710/Renault-Financial-Analysis" target="_blank" rel="noopener" class="btn btn-sm btn-github">
-                                    <i class="fab fa-github me-2"></i>GitHub
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!-- PARCOURS -->
+<section id="parcours">
+  <p class="section-label reveal"><span class="section-label-text" data-i18n="parcours_label">Experience & Education</span></p>
+  <h2 class="section-title reveal" data-i18n="parcours_title">Journey</h2>
+  <div class="timeline reveal">
+    <div class="tl-item">
+      <div class="tl-meta">
+        <span class="tl-date">2024 — 2026</span>
+        <span class="tl-type" data-i18n="tl_apprentice">Apprentice</span>
+      </div>
+      <div class="tl-body">
+        <div class="tl-org">Kantar Worldpanel</div>
+        <div class="tl-role" data-i18n="tl_kantar_role">Data Scientist — Apprentice</div>
+        <p class="tl-desc" data-i18n="tl_kantar_desc">Automation of data workflows in R, benchmark database updates, automatic report generation and media study analysis for the Insights team.</p>
+        <div class="tl-tags"><span class="tl-tag">R</span><span class="tl-tag" data-i18n="tag_ts">Time Series</span><span class="tl-tag">Power BI</span><span class="tl-tag" data-i18n="tag_auto">Automation</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-meta">
+        <span class="tl-date">2023 — 2026</span>
+        <span class="tl-type" data-i18n="tl_education">Education</span>
+      </div>
+      <div class="tl-body">
+        <div class="tl-org">IUT Paris Rives de Seine</div>
+        <div class="tl-role" data-i18n="tl_iut_role">B.Sc. Data Science (BUT)</div>
+        <p class="tl-desc" data-i18n="tl_iut_desc">Training in statistics, machine learning, data visualization, databases and software development. Cross-disciplinary team projects on real-world data.</p>
+        <div class="tl-tags"><span class="tl-tag">Python</span><span class="tl-tag">SQL</span><span class="tl-tag">Dashboard</span><span class="tl-tag">Big Data</span><span class="tl-tag">Machine Learning</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-meta">
+        <span class="tl-date">2023</span>
+        <span class="tl-type" data-i18n="tl_diploma">Diploma</span>
+      </div>
+      <div class="tl-body">
+        <div class="tl-org" data-i18n="tl_bac_org">French Baccalauréat</div>
+        <div class="tl-role" data-i18n="tl_bac_role">Maths & Computer Science specialties</div>
+        <p class="tl-desc" data-i18n="tl_bac_desc">General baccalauréat with Mathematics and Digital & Computer Science specialties, oriented toward quantitative sciences and programming.</p>
+        <div class="tl-tags"><span class="tl-tag" data-i18n="tag_math">Mathematics</span><span class="tl-tag">NSI / CS</span></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-                <!-- Projet 5: Data Mining Scoring -->
-                <div class="col-md-4 mb-4">
-                    <div class="project-card-clickable" data-bs-toggle="modal" data-bs-target="#projectModal5">
-                        <div class="project-image">
-                            <img src="Image/datamining_vacances.jpeg" alt="Data Mining Scoring">
-                            <div class="project-overlay">
-                                <i class="fas fa-eye"></i>
-                                <span>Voir le projet</span>
-                            </div>
-                        </div>
-                        <div class="project-card-content">
-                            <div class="project-card-top">
-                                <h4 class="project-card-title">Scoring de réacheteurs</h4>
-                            </div>
-                            <p class="project-card-desc"> Création d'un script R pour nettoyer une base de données d'une agence de voyage afin d'établir un score de clients réacheteurs. Ce projet a été réalisé en apprentissage non supervisé, afin d'être analysée dans Dashboard Power BI.</p>
-                            <div class="project-cta"><a class="btn-outline" data-bs-toggle="modal" data-bs-target="#projectModal5">En savoir plus</a></div>
-                            <div class="project-tags">
-                                <span class="custom-badge badge-info">R </span>
-                                <span class="custom-badge badge-info">FactoMineR</span>
-                                <span class="custom-badge badge-info">Power BI</span>
-                            </div>
-                            <small class="text-muted d-block mt-3">Décembre 2025</small>
-                            <div class="mt-2">
-                                <a href="https://github.com/NathanChan1710/Scoring-r-achat" target="_blank" rel="noopener" class="btn btn-sm btn-github">
-                                    <i class="fab fa-github me-2"></i>GitHub
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="divider reveal"></div>
 
-                <!-- Projet 1: Concours DataViz Power BI -->
-                <div class="col-md-4 mb-4">
-                    <div class="project-card-clickable" data-bs-toggle="modal" data-bs-target="#projectModal1">
-                        <div class="project-image">
-                            <img src="Image/meteo1.png" alt="Concours DataViz Power BI">
-                            <div class="project-overlay">
-                                <i class="fas fa-eye"></i>
-                                <span>Voir le projet</span>
-                            </div>
-                        </div>
-                        <div class="project-card-content">
-                            <div class="project-card-top">
-                                <h4 class="project-card-title">Concours DataViz Power BI - 1er Prix</h4>
-                            </div>
-                            <p class="project-card-desc">Création d'un tableau de bord interactif pour analyser des données météorologiques. Notre équipe a remporté le premier prix de l'IUT et s'est qualifiée pour la phase finale nationale.</p>
-                            <div class="project-cta"><a class="btn-outline" data-bs-toggle="modal" data-bs-target="#projectModal1">En savoir plus</a></div>
-                            <div class="project-tags">
-                                <span class="custom-badge badge-info">Power BI</span>
-                                <span class="custom-badge badge-info">Excel</span>
-                                <span class="custom-badge badge-info">Data Visualization</span>
-                            </div>
-                            <small class="text-muted d-block mt-3">Mai 2024</small>
-                            <div class="mt-2">
-                                <a href="https://github.com/NathanChan1710" target="_blank" rel="noopener" class="btn btn-sm btn-github">
-                                    <i class="fab fa-github me-2"></i>GitHub
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!-- SKILLS -->
+<section id="skills">
+  <p class="section-label reveal"><span class="section-label-text" data-i18n="skills_label">Technical Stack</span></p>
+  <h2 class="section-title reveal" data-i18n="skills_title">Skills</h2>
+  <div class="reveal">
+    <div class="skills-grid">
 
-                <!-- Projet 2: Collecte automatisée de données web -->
-                <div class="col-md-4 mb-4">
-                    <div class="project-card-clickable" data-bs-toggle="modal" data-bs-target="#projectModal2">
-                        <div class="project-image">
-                            <img src="Image/collect1.png" alt="Collecte automatisée de données web">
-                            <div class="project-overlay">
-                                <i class="fas fa-eye"></i>
-                                <span>Voir le projet</span>
-                            </div>
-                        </div>
-                        <div class="project-card-content">
-                            <div class="project-card-top">
-                                <h4 class="project-card-title">Collecte automatisée de données web</h4>
-                            </div>
-                            <p class="project-card-desc">Système automatisé pour collecter des données sur les commerces parisiens via les API data.gouv.fr et Google Maps. Détection automatique de sites web et services de livraison.</p>
-                            <div class="project-cta"><a class="btn-outline" data-bs-toggle="modal" data-bs-target="#projectModal2">En savoir plus</a></div>
-                            <div class="project-tags">
-                                <span class="custom-badge badge-info">Python</span>
-                                <span class="custom-badge badge-info">API</span>
-                                <span class="custom-badge badge-info">Web Scraping</span>
-                            </div>
-                            <small class="text-muted d-block mt-3">Mars 2025</small>
-                            <div class="mt-2">
-                                <a href="https://github.com/NathanChan1710" target="_blank" rel="noopener" class="btn btn-sm btn-github">
-                                    <i class="fab fa-github me-2"></i>GitHub
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Projet 3: Automatisation Base Benchmark -->
-                <div class="col-md-4 mb-4">
-                    <div class="project-card-clickable" data-bs-toggle="modal" data-bs-target="#projectModal3">
-                        <div class="project-image">
-                            <img src="Image/Base_ppt.png" alt="Automatisation Base Benchmark">
-                            <div class="project-overlay">
-                                <i class="fas fa-eye"></i>
-                                <span>Voir le projet</span>
-                            </div>
-                        </div>
-                        <div class="project-card-content">
-                            <div class="project-card-top">
-                                <h4 class="project-card-title">Automatisation Base Benchmark</h4>
-                            </div>
-                            <p class="project-card-desc">Solution R pour automatiser la mise à jour d'une base de données benchmark. Permet d'évaluer en continu la performance des études média chez Kantar Worldpanel.</p>
-                            <div class="project-cta"><a class="btn-outline" data-bs-toggle="modal" data-bs-target="#projectModal3">En savoir plus</a></div>
-                            <div class="project-tags">
-                                <span class="custom-badge badge-info">R</span>
-                                <span class="custom-badge badge-info">Excel</span>
-                                <span class="custom-badge badge-info">Automatisation</span>
-                            </div>
-                            <small class="text-muted d-block mt-3">Avril 2025</small>
-                            <div class="mt-2">
-                                <a href="https://github.com/NathanChan1710" target="_blank" rel="noopener" class="btn btn-sm btn-github">
-                                    <i class="fab fa-github me-2"></i>GitHub
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="sk-block">
+        <svg class="sk-glyph" viewBox="0 0 28 28" fill="none">
+          <circle cx="4"  cy="10" r="2" fill="currentColor"/><circle cx="4"  cy="14" r="2" fill="currentColor"/><circle cx="4"  cy="18" r="2" fill="currentColor"/>
+          <circle cx="8"  cy="6"  r="2" fill="currentColor"/><circle cx="8"  cy="22" r="2" fill="currentColor"/>
+          <circle cx="20" cy="6"  r="2" fill="currentColor"/><circle cx="20" cy="22" r="2" fill="currentColor"/>
+          <circle cx="24" cy="10" r="2" fill="currentColor"/><circle cx="24" cy="14" r="2" fill="currentColor"/><circle cx="24" cy="18" r="2" fill="currentColor"/>
+        </svg>
+        <span class="sk-label" data-i18n="sk_lang_label">Languages</span>
+        <div class="sk-title" data-i18n="sk_lang_title">Code</div>
+        <div class="sk-chips">
+          <span class="sk-chip">Python</span>
+          <span class="sk-chip">TensorFlow / Keras</span>
+          <span class="sk-chip">PySpark</span>
+          <span class="sk-chip">Pandas</span>
+          
+          <span class="sk-chip">R</span>
+          <span class="sk-chip">SQL</span>
+          <span class="sk-chip">SAS</span>
+          <span class="sk-chip">HTML/CSS</span>
         </div>
-    </section>
+      </div>
 
-    <!-- Experience & Education Timeline -->
-    <section id="experience" class="section">
-        <div class="container">
-            <h2 class="section-title">Découvrez mon parcours</h2>
-            <div class="timeline">
-                <div class="timeline-item fade-in">
-                    <div class="timeline-content">
-                        <h4 class="text-primary">Data Scientist Alternant</h4>
-                        <h5>Kantar Worldpanel</h5>
-                        <p>Analyse des données de consommation, développement d'outils d'automatisation, 
-                           création de rapports et expertise dans le domaine de l'anaylse de l'impact des medias tel que la pub.</p>
-                    </div>
-                    <div class="timeline-date">2024-2026</div>
-                </div>
-                
-                <div class="timeline-item fade-in">
-                    <div class="timeline-content">
-                        <h4 class="text-primary">BUT Science des Données</h4>
-                        <h5>IUT Paris Rives de Seine</h5>
-                        <p>Formation en 3 ans spécialisée en analyse de données, statistiques, programmation 
-                           et visualisation. Parcours VCOD (Visualisation et Conception d'outils décisionnels).</p>
-                    </div>
-                    <div class="timeline-date">2023-2026</div>
-                </div>
-                
-                <div class="timeline-item fade-in">
-                    <div class="timeline-content">
-                        <h4 class="text-primary">Baccalauréat Général</h4>
-                        <h5>Lycée Guy de Maupassant</h5>
-                        <p>Spécialités NSI (Numérique et Sciences Informatiques) et Mathématiques. 
-                           Mention Assez Bien.</p>
-                    </div>
-                    <div class="timeline-date">2020-2023</div>
-                </div>
-            </div>
+      <div class="sk-block">
+        <svg class="sk-glyph" viewBox="0 0 28 28" fill="none">
+          <circle cx="4"  cy="8"  r="2" fill="currentColor"/><circle cx="4"  cy="14" r="2" fill="currentColor"/><circle cx="4"  cy="20" r="2" fill="currentColor"/>
+          <circle cx="14" cy="5"  r="2" fill="currentColor"/><circle cx="14" cy="14" r="2" fill="currentColor"/><circle cx="14" cy="23" r="2" fill="currentColor"/>
+          <circle cx="24" cy="10" r="2" fill="currentColor"/><circle cx="24" cy="18" r="2" fill="currentColor"/>
+          <line x1="6" y1="8"  x2="12" y2="5"  stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+          <line x1="6" y1="14" x2="12" y2="14" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+          <line x1="6" y1="20" x2="12" y2="23" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+          <line x1="16" y1="5"  x2="22" y2="10" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+          <line x1="16" y1="14" x2="22" y2="10" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+          <line x1="16" y1="14" x2="22" y2="18" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+          <line x1="16" y1="23" x2="22" y2="18" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+        </svg>
+        <span class="sk-label">Data Science</span>
+        <div class="sk-chips">
+          <span class="sk-chip">Machine Learning / Deep Learning</span>
+          <span class="sk-chip">Clustering</span>
+          <span class="sk-chip">Time series</span>
+          <span class="sk-chip">Scoring</span>
         </div>
-    </section>
+      </div>
 
-    <!-- Contact Section -->
-    <section id="contact" class="section">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="contact-card fade-in">
-                        <h2 class="mb-4">Contactez-moi</h2>
-                        <p class="lead mb-4">
-                            Intéressé par mon profil ? Avec plaisir !<br>
-                            <span class="break-line"></span>
-                            N'hésitez pas à me contacter pour discuter 
-                            d'opportunités je reste à votre disposition. 
-                        </p>
-                        <div class="social-links">
-                            <a href="mailto:nathan.chansingman@gmail.com" class="social-link" title="Email">
-                                <i class="fas fa-envelope"></i>
-                            </a>
-                            <a href="https://www.linkedin.com/in/nathan-chan-sing-man-560b10272/" class="social-link" title="LinkedIn">
-                                <i class="fab fa-linkedin-in"></i>
-                            </a>
-                            <a href="https://github.com/NathanChan1710" class="social-link" title="GitHub" target="_blank" rel="noopener">
-                                <i class="fab fa-github"></i>
-                            </a>
-                            <a href=" Image/CV_Nathan_Chan Sing Man.pdf" class="social-link" title="Télécharger CV">
-                                <i class="fas fa-download"></i>
-                            </a>
-                        </div>
-                        <div class="mt-4">
-                            <p class="mb-1"><i class="fas fa-envelope me-2"></i> nathan.chansingman@gmail.com</p>
-                            <p class="mb-0"><i class="fas fa-map-marker-alt me-2"></i> Paris, France</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="sk-block">
+        <svg class="sk-glyph" viewBox="0 0 28 28" fill="none">
+          <circle cx="4"  cy="22" r="2" fill="currentColor"/>
+          <circle cx="4"  cy="18" r="2" fill="currentColor"/>
+          <circle cx="4"  cy="14" r="2" fill="currentColor"/>
+          <circle cx="10" cy="22" r="2" fill="currentColor"/>
+          <circle cx="10" cy="18" r="2" fill="currentColor"/>
+          <circle cx="10" cy="14" r="2" fill="currentColor"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor"/>
+          <circle cx="16" cy="22" r="2" fill="currentColor"/>
+          <circle cx="16" cy="18" r="2" fill="currentColor"/>
+          <circle cx="22" cy="22" r="2" fill="currentColor"/>
+          <circle cx="22" cy="18" r="2" fill="currentColor"/>
+          <circle cx="22" cy="14" r="2" fill="currentColor"/>
+          <circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="22" cy="6"  r="2" fill="#e8302a"/>
+        </svg>
+        <span class="sk-label" data-i18n="sk_viz_label">Visualization</span>
+          <div class="sk-chips">
+          <span class="sk-chip">Power BI</span>
+          <span class="sk-chip">Dataiku</span>
+          <span class="sk-chip">RShiny</span>
+          <span class="sk-chip">Streamlit</span>
+          <span class="sk-chip">My Report</span>
         </div>
-    </section>
+      </div>
 
-    <!-- Modals pour les projets -->
-    
-    <!-- Modal Projet 1: Concours DataViz Power BI -->
-    <div class="modal fade" id="projectModal1" tabindex="-1" aria-labelledby="projectModal1Label" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="projectModal1Label">Concours DataViz Power BI - 1er Prix</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="modal-project-image mb-4">
-                        <img src="Image/meteo1.png" alt="Concours DataViz" class="img-fluid rounded">
-                    </div>
-                    <h6 class="fw-bold mb-3">Description du projet</h6>
-                    <div class="modal-meta">
-                        <span class="meta-badge">Concours</span>
-                        <span class="meta-badge">Data Visualization</span>
-                        <div class="modal-date">Mai 2024</div>
-                    </div>
-                    <p>Création d'un tableau de bord interactif pour analyser des données météorologiques. Notre équipe a remporté le premier prix de l'IUT et s'est qualifiée pour la phase finale nationale du concours Data Visualisation.</p>
+    </div>
+    <div class="skills-grid-bottom">
 
-                    <h6 class="fw-bold mb-3 mt-4">Objectifs</h6>
-                    <ul>
-                        <li>Collecte et intégration de données météorologiques</li>
-                        <li>Création de visualisations interactives et explicites</li>
-                        <li>Design UX/UI pour l'accessibilité des données</li>
-                        <li>Documentation et présentation des résultats</li>
-                    </ul>
-
-                    <h6 class="fw-bold mb-3 mt-4">Technologies utilisées</h6>
-                    <div class="mb-3">
-                        <span class="custom-badge badge-info">Power BI</span>
-                        <span class="custom-badge badge-info">Excel</span>
-                        <span class="custom-badge badge-info">DAX</span>
-                    </div>
-
-                    <h6 class="fw-bold mb-3 mt-4">Résultats</h6>
-                    <div class="modal-results">Tableau de bord multi-dimensions permettant l'analyse en temps réel des tendances météorologiques avec 4 dimensions d'analyse principales et 12+ KPIs interactifs.</div>
-
-                    <div class="mt-4">
-                        <small class="text-muted">Projet académique - Mai 2024</small>
-                    </div>
-                    <div class="mt-3">
-                        <a href="https://github.com/NathanChan1710" target="_blank" rel="noopener" class="btn btn-sm btn-github">
-                            <i class="fab fa-github me-2"></i>Voir sur GitHub
-                        </a>
-                    </div>
-                </div>
-            </div>
+      <div class="sk-block">
+        <svg class="sk-glyph" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="4"  r="2" fill="currentColor"/>
+          <circle cx="22" cy="8"  r="2" fill="currentColor"/><circle cx="24" cy="14" r="2" fill="currentColor"/>
+          <circle cx="22" cy="20" r="2" fill="currentColor"/><circle cx="14" cy="24" r="2" fill="currentColor"/>
+          <circle cx="6"  cy="20" r="2" fill="currentColor"/><circle cx="4"  cy="14" r="2" fill="currentColor"/>
+          <circle cx="6"  cy="8"  r="2" fill="currentColor"/>
+          <circle cx="14" cy="14" r="2" fill="#e8302a"/>
+        </svg>
+        <span class="sk-label" data-i18n="sk_eng_label">Engineering</span>
+          <div class="sk-chips">
+          <span class="sk-chip">ETL</span>
+          <span class="sk-chip">API</span>
+          <span class="sk-chip">Web Scraping</span>
+          <span class="sk-chip">Big Data</span>
         </div>
+      </div>
+
+      <div class="sk-block">
+        <svg class="sk-glyph" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="5"  r="2" fill="currentColor"/>
+          <circle cx="20" cy="9"  r="2" fill="currentColor"/><circle cx="22" cy="15" r="2" fill="currentColor"/>
+          <circle cx="18" cy="21" r="2" fill="currentColor"/><circle cx="10" cy="21" r="2" fill="currentColor"/>
+          <circle cx="6"  cy="15" r="2" fill="currentColor"/><circle cx="8"  cy="9"  r="2" fill="currentColor"/>
+          <circle cx="14" cy="13" r="2" fill="#e8302a"/>
+        </svg>
+        <span class="sk-label" data-i18n="sk_eco_label">Tools & Environments</span>
+        <div class="sk-chips">
+          <span class="sk-chip">Git/Github</span>
+          <span class="sk-chip">VS Code</span>
+          <span class="sk-chip">Jupyter notebook</span>
+          <span class="sk-chip">Google Cloud</span>
+        </div>
+      </div>
+
     </div>
 
-    <!-- Modal Projet 2: Collecte automatisée de données web -->
-    <div class="modal fade" id="projectModal2" tabindex="-1" aria-labelledby="projectModal2Label" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="projectModal2Label">Collecte automatisée de données web</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="modal-project-image mb-4">
-                        <img src="Image/collect1.png" alt="Collecte données" class="img-fluid rounded">
-                    </div>
-                    <h6 class="fw-bold mb-3">Description du projet</h6>
-                    <p>Développement d'un système automatisé pour collecter des données sur les commerces parisiens en utilisant les API data.gouv.fr et Google Maps. Le projet inclut la détection automatique des sites web et des services de livraison.</p>
-                    
-                    <h6 class="fw-bold mb-3 mt-4">Objectifs</h6>
-                    <ul>
-                        <li>Intégration d'APIs externes (data.gouv.fr, Google Maps)</li>
-                        <li>Web scraping et extraction de données géolocalisées</li>
-                        <li>Enrichissement automatique d'une base de données</li>
-                        <li>Gestion d'erreurs et validation de données</li>
-                    </ul>
-                    
-                    <h6 class="fw-bold mb-3 mt-4">Technologies utilisées</h6>
-                    <div class="mb-3">
-                        <span class="custom-badge badge-info">Python</span>
-                        <span class="custom-badge badge-info">API REST</span>
-                        <span class="custom-badge badge-info">Web Scraping</span>
-                        <span class="custom-badge badge-info">Pandas</span>
-                        <span class="custom-badge badge-info">Géolocalisation</span>
-                    </div>
-                    
-                    <h6 class="fw-bold mb-3 mt-4">Résultats</h6>
-                    <p>Extraction de 5000+ fiche commerciales avec enrichissement géographique. Automatisation complète du processus réduisant le temps de collecte de 40 heures à 2 heures.</p>
-                    
-                    <div class="mt-4">
-                        <small class="text-muted">Projet académique - Mars 2025</small>
-                    </div>
-                    <div class="mt-3">
-                        <a href="https://github.com/NathanChan1710" target="_blank" rel="noopener" class="btn btn-sm btn-github">
-                            <i class="fab fa-github me-2"></i>Voir sur GitHub
-                        </a>
-                    </div>
-                </div>
-            </div>
+    <!-- Soft skills as a separate full-width strip -->
+    <div style="margin-top:1px; background: var(--border);">
+      <div class="sk-block" style="width:100%">
+        <svg class="sk-glyph" viewBox="0 0 28 28" fill="none">
+          <circle cx="4" cy="4" r="2" fill="currentColor"/><circle cx="10" cy="4" r="2" fill="currentColor"/><circle cx="16" cy="4" r="2" fill="currentColor"/><circle cx="22" cy="4" r="2" fill="currentColor"/>
+          <circle cx="4" cy="10" r="2" fill="currentColor"/><circle cx="10" cy="10" r="2" fill="currentColor"/><circle cx="16" cy="10" r="2" fill="#e8302a"/><circle cx="22" cy="10" r="2" fill="currentColor"/>
+          <circle cx="4" cy="16" r="2" fill="currentColor"/><circle cx="10" cy="16" r="2" fill="currentColor"/><circle cx="16" cy="16" r="2" fill="currentColor"/><circle cx="22" cy="16" r="2" fill="currentColor"/>
+          <circle cx="4" cy="22" r="2" fill="currentColor"/><circle cx="10" cy="22" r="2" fill="currentColor"/><circle cx="16" cy="22" r="2" fill="currentColor"/><circle cx="22" cy="22" r="2" fill="currentColor"/>
+        </svg>
+        <span class="sk-label" data-i18n="sk_soft_label">Soft Skills</span>
+        <div class="sk-pills">
+          <span class="sk-pill" data-i18n="soft_1">Oral communication</span>
+          <span class="sk-pill" data-i18n="soft_2">Teamwork</span>
+          <span class="sk-pill" data-i18n="soft_3">Report writing</span>
+          <span class="sk-pill" data-i18n="soft_4">Project management</span>
+          <span class="sk-pill" data-i18n="soft_5">Analytical mindset</span>
+          <span class="sk-pill" data-i18n="soft_6">Economics basics</span>
         </div>
+      </div>
     </div>
+  </div>
+</section>
 
-    <!-- Modal Projet 3: Automatisation Base Benchmark -->
-    <div class="modal fade" id="projectModal3" tabindex="-1" aria-labelledby="projectModal3Label" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="projectModal3Label">Automatisation Base Benchmark</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="modal-project-image mb-4">
-                        <img src="Image/Base_ppt.png" alt="Automatisation Benchmark" class="img-fluid rounded">
-                    </div>
-                    <h6 class="fw-bold mb-3">Description du projet</h6>
-                    <p>Développement d'une solution R pour automatiser la mise à jour d'une base de données benchmark. Cet outil permet d'évaluer en continu la performance des études média chez Kantar Worldpanel.</p>
-                    
-                    <h6 class="fw-bold mb-3 mt-4">Objectifs</h6>
-                    <ul>
-                        <li>Automatisation des tâches répétitives de mise à jour</li>
-                        <li>Intégration de multiples sources de données</li>
-                        <li>Validation et qualité des données</li>
-                        <li>Génération de rapports et alertes automatiques</li>
-                    </ul>
-                    
-                    <h6 class="fw-bold mb-3 mt-4">Technologies utilisées</h6>
-                    <div class="mb-3">
-                        <span class="custom-badge badge-info">R</span>
-                        <span class="custom-badge badge-info">Excel</span>
-                        <span class="custom-badge badge-info">Automatisation</span>
-                        <span class="custom-badge badge-info">dplyr</span>
-                        <span class="custom-badge badge-info">Rmarkdown</span>
-                    </div>
-                    
-                    <h6 class="fw-bold mb-3 mt-4">Résultats</h6>
-                    <p>Réduction de 8 heures/semaine de travail manuel. Amélioration de la fiabilité des données avec validation automatique. Génération de 15+ rapports mensuels sans intervention manuelle.</p>
-                    
-                    <div class="mt-4">
-                        <small class="text-muted">Projet professionnel - Kantar Worldpanel - Avril 2025</small>
-                    </div>
-                    <div class="mt-3">
-                        <a href="https://github.com/NathanChan1710" target="_blank" rel="noopener" class="btn btn-sm btn-github">
-                            <i class="fab fa-github me-2"></i>Voir sur GitHub
-                        </a>
-                    </div>
-                </div>
-            </div>
+<div class="divider reveal"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label reveal"><span class="section-label-text">Contact</span></p>
+  <h2 class="section-title reveal" data-i18n="contact_title">Let's work<br>together.</h2>
+  <div class="contact-grid">
+    <div class="reveal">
+      <p data-i18n="contact_desc">Available for an apprenticeship in September 2026 (Master's, 2 years). Open to opportunities in data science, analytics and machine learning.</p>
+      <div class="contact-links">
+        <a href="mailto:nathanchan1710@gmail.com" class="contact-link">
+          <div><div class="contact-link-label">Email</div><div class="contact-link-value">nathanchan1710@gmail.com</div></div>
+          <span class="contact-link-arrow">↗</span>
+        </a>
+        <a href="https://www.linkedin.com/in/nathan-chan-sing-man-560b10272/" target="_blank" class="contact-link">
+          <div><div class="contact-link-label">LinkedIn</div><div class="contact-link-value">Nathan Chan</div></div>
+          <span class="contact-link-arrow">↗</span>
+        </a>
+        <a href="https://github.com/NathanChan1710" target="_blank" class="contact-link">
+          <div><div class="contact-link-label">GitHub</div><div class="contact-link-value">NathanChan1710</div></div>
+          <span class="contact-link-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <div class="contact-status"><div class="status-dot"></div><p class="status-text" data-i18n="contact_status">Available — <strong>Apprenticeship Sept 2026</strong></p></div>
+      <div class="contact-info-block">
+        <div class="info-row"><div class="info-label" data-i18n="info_formation">Current studies</div><div class="info-value">BUT Data Science — IUT Paris Rives de Seine</div></div>
+        <div class="info-row"><div class="info-label" data-i18n="info_alternance">Current apprenticeship</div><div class="info-value">Data Scientist — Kantar Worldpanel</div></div>
+        <div class="info-row"><div class="info-label" data-i18n="info_objectif">Goal</div><div class="info-value" data-i18n="info_objectif_val">Master in ML & Data Science · Sept 2026</div></div>
+        <div class="info-row" style="margin-bottom:0"><div class="info-label" data-i18n="info_loc">Location</div><div class="info-value">Paris, France</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo"><div class="footer-logo-dot"></div> NC.</div>
+  <div class="footer-nothing">designed with nothing® aesthetics</div>
+  <div class="footer-copy">© 2026 Nathan Chan</div>
+</footer>
+
+<!-- FOLDER MODAL -->
+<div class="folder-modal" id="folderModal">
+  <div class="fm-backdrop" onclick="closeFolder()"></div>
+  <div class="fm-scene">
+    <div class="fm-cover-wrap">
+      <div class="fm-tab" id="fmTabNum"></div>
+      <div class="fm-cover">
+        <div>
+          <div class="fm-cover-label" id="fmCoverLabel"></div>
+          <div class="fm-cover-title" id="fmCoverTitle"></div>
         </div>
+        <button class="fm-close" onclick="closeFolder()">✕</button>
+      </div>
     </div>
-
-<!-- Modal Projet 4: SNCF SAE -->
-<div class="modal fade" id="projectModal6" tabindex="-1" aria-labelledby="projectModal6Label" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="projectModal6Label">Analyse Réseaux et Infrastructure pour la SNCF</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-
-                <!-- Carrousel d'images -->
-                <div id="carouselProject6" class="carousel slide mb-4" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-
-                        <div class="carousel-item active">
-                            <img src="Image/sncf_1.png" class="d-block w-100 rounded" alt="Renault Financial Analysis">
-                        </div>
-
-                        <div class="carousel-item">
-                            <img src="Image/sncf_2.png" class="d-block w-100 rounded" alt="Image 2">
-                        </div>
-
-                        <div class="carousel-item">
-                            <img src="Image/sncf_3.png" class="d-block w-100 rounded" alt="Image 3">
-                        </div>
-
-                    </div>
-
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselProject6" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselProject6" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                    </button>
-
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselProject6" data-bs-slide-to="0" class="active"></button>
-                        <button type="button" data-bs-target="#carouselProject6" data-bs-slide-to="1"></button>
-                        <button type="button" data-bs-target="#carouselProject6" data-bs-slide-to="2"></button>
-                        <button type="button" data-bs-target="#carouselProject6" data-bs-slide-to="3"></button>
-                    </div>
-                </div>
-
-                <h6 class="fw-bold mb-3">Description du projet</h6>
-                <div class="modal-meta">
-                    <span class="meta-badge">SNCF</span>
-                    <span class="meta-badge">Réseau et Voyageurs</span>
-                    <span class="meta-badge">Datavisualisation</span>
-                    <div class="modal-date">Janvier 2026</div>
-                </div>
-
-                <p>L’analyse s’inscrit dans la mission centrale de SNCF Réseau et SNCF Voyageurs : garantir un réseau fiable, disponible et sécurisé pour des millions d’usagers. Le fonctionnement quotidien dépend d’un parc immense d’équipements dont la conception, le déploiement et la maintenance exigent une surveillance continue. Chaque défaut technique, chaque incident détecté par les trains constitue une source précieuse de retour d’expérience pour anticiper les risques et améliorer la performance du réseau.</p>
-
-                <h6 class="fw-bold mb-3 mt-4">Méthodologie</h6>
-                <ul>
-                    <li>Préparation des données et nettoyage</li>
-                    <li>Analyse descriptive des données sur Power BI</li>
-                    <li> Conception du Power BI pour respecter la charte graphique de la SNCF</li>
-                    <li>Respect des deadline, présentation du projet en amphithéâtre</li>
-                </ul>
-
-                <h6 class="fw-bold mb-3 mt-4">Technologies utilisées</h6>
-                <div class="mb-3">
-                    <span class="custom-badge badge-info">R</span>
-                    <span class="custom-badge badge-info">Jointure</span>
-                    <span class="custom-badge badge-info">Data Open Source SNCF</span>
-                    <span class="custom-badge badge-info">Power BI</span>
-                </div>
-
-                <h6 class="fw-bold mb-3 mt-4">Résultats & Conclusions</h6>
-                <div class="modal-results">
-                    <ul style="margin-top: 0.5rem;">
-                        <li>Ligne entre Paris/Dijon/Lyon : nombreux événements trains</li>
-                        <li>Sur les tranches de tensions y en a une dizaine qui ont des  anormales + de 10.000KW d’écarts environ</li>
-                        <li>Certains Evènement n’arrive qu'à l’arret </li>
-                        <li>Zone de Paris avec le plus d’écart de tension mais aussi le plus d’incidents liés à la tension en mars 2013</li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <small class="text-muted">Projet académique - Janvier 2026</small>
-                </div>
-
-                <div class="mt-3">
-                    <a href="https://github.com/NathanChan1710/Renault-Financial-Analysis" target="_blank" rel="noopener" class="btn btn-sm btn-github">
-                        <i class="fab fa-github me-2"></i>Voir sur GitHub
-                    </a>
-                </div>
-
-            </div>
-        </div>
+    <div class="fm-paper">
+      <div class="fm-paper-inner" id="fmPaperInner"></div>
     </div>
+  </div>
 </div>
 
+<script>
+/* ── I18N ── */
+const translations = {
+  en: {
+    nav_about: 'About', nav_parcours: 'Journey', nav_skills: 'Stack',
+    nav_projects: 'Projects', nav_contact: 'Contact',
+    widget_available: 'Available',
+    hero_label: 'Data Scientist · Apprentice',
+    hero_desc: 'Student in Data Science at IUT Paris Rives de Seine,\napprentice at Kantar Worldpanel. I turn raw data\ninto informed decisions — through analysis, code, and visualization.',
+    hero_cta_projects: 'View projects ↗', hero_cta_contact: 'Get in touch',
+    projects_label: 'Selected works', projects_title: 'Projects',
+    proj_sncf_title: 'Network & Infrastructure Analysis SNCF',
+    proj_sncf_desc: 'Exploring the link between network data and incidents. Power BI dashboard for SNCF Réseau.',
+    proj_renault_desc: 'Stock data analysis for Renault (CAC40). Python pipeline + financial Power BI dashboard.',
+    proj_scoring_title: 'Repurchase Scoring Model',
+    proj_scoring_desc: 'Unsupervised R modeling. Repurchase probability scoring for a travel agency.',
+    proj_dataviz_title: 'DataViz Contest — 1st Prize',
+    proj_dataviz_desc: 'Interactive weather dashboard. 1st prize IUT + national Power BI finalist.',
+    proj_web_title: 'Automated Web Data Collection',
+    proj_web_desc: 'Python system collecting Paris business data via data.gouv.fr and Google Maps APIs.',
+    proj_bench_title: 'Benchmark Database Automation',
+    proj_bench_desc: 'R solution automating benchmark base updates at Kantar Worldpanel.',
+    open_hint: 'Open ↗',
+    about_label: 'About', about_title: 'Who am I?',
+    about_p1: 'Currently an apprentice at <strong>Kantar Worldpanel</strong>, I develop R solutions to automate data workflows and produce actionable insights.',
+    about_p2: "I'm looking for an <strong>apprenticeship starting September 2026</strong> to continue my Master's studies, with a clear ambition: going further in applied data science.",
+    stat_exp: 'Experience', stat_years: 'yrs', stat_proj: 'Projects',
+    stat_avail: 'Available', stat_loc: 'Location',
+    parcours_label: 'Experience & Education', parcours_title: 'Journey',
+    tl_apprentice: 'Apprentice', tl_education: 'Education', tl_diploma: 'Diploma',
+    tl_kantar_role: 'Data Scientist — Apprentice',
+    tl_kantar_desc: 'Automation of data workflows in R, benchmark database updates, automatic report generation and media study analysis for the Insights team.',
+    tag_ts: 'Time Series', tag_auto: 'Automation',
+    tl_iut_role: 'B.Sc. Data Science (BUT)',
+    tl_iut_desc: 'Training in statistics, machine learning, data visualization, databases and software development. Cross-disciplinary team projects on real-world data.',
+    tl_bac_org: 'French Baccalauréat', tl_bac_role: 'Maths & Computer Science specialties',
+    tl_bac_desc: 'General baccalauréat with Mathematics and Digital & Computer Science specialties, oriented toward quantitative sciences and programming.',
+    tag_math: 'Mathematics',
+    skills_label: 'Technical Stack', skills_title: 'Skills',
+    sk_lang_label: 'Languages', sk_lang_title: 'Code',
+    sk_stats: 'Statistics', sk_viz_label: 'Visualization',
+    sk_eng_label: 'Engineering', sk_eng_title: 'Automation',
+    sk_eco_label: 'Tools & Environments', sk_eco_title: 'Ecosystem',
+    sk_soft_label: 'Human Skills',
+    soft_1: 'Oral communication', soft_2: 'Teamwork', soft_3: 'Report writing',
+    soft_4: 'Project management', soft_5: 'Analytical mindset', soft_6: 'Economics basics',
+    contact_title: "Let's work<br>together.",
+    contact_desc: 'Available for an apprenticeship in September 2026 (Master\'s, 2 years). Open to opportunities in data science, analytics and machine learning.',
+    contact_status: 'Available — <strong>Apprenticeship Sept 2026</strong>',
+    info_formation: 'Current studies', info_alternance: 'Current apprenticeship',
+    info_objectif: 'Goal', info_objectif_val: 'Master in ML & Data Science · Sept 2026',
+    info_loc: 'Location',
+    // project modal translations
+    m_desc: 'Description', m_method: 'Methodology', m_stack: 'Stack', m_github: 'GitHub ↗'
+  },
+  fr: {
+    nav_about: 'À propos', nav_parcours: 'Parcours', nav_skills: 'Stack',
+    nav_projects: 'Projets', nav_contact: 'Contact',
+    widget_available: 'Disponible',
+    hero_label: 'Data Scientist · Alternant',
+    hero_desc: "Étudiant en BUT Science des Données à l'IUT Paris Rives de Seine,\nen alternance chez Kantar Worldpanel. Je transforme la donnée brute\nen décisions éclairées — par l'analyse, le code, et la visualisation.",
+    hero_cta_projects: 'Voir les projets ↗', hero_cta_contact: 'Me contacter',
+    projects_label: 'Travaux sélectionnés', projects_title: 'Projets',
+    proj_sncf_title: 'Analyse Réseaux & Infrastructure SNCF',
+    proj_sncf_desc: "Exploration de la liaison entre données réseau et incidents. Dashboard Power BI pour SNCF Réseau.",
+    proj_renault_desc: 'Analyse des données boursières Renault (CAC40). Pipeline Python + dashboard Power BI financier.',
+    proj_scoring_title: 'Scoring de Réacheteurs',
+    proj_scoring_desc: "Modélisation non supervisée en R. Score de probabilité de réachat pour une agence de voyage.",
+    proj_dataviz_title: 'Concours DataViz — 1er Prix',
+    proj_dataviz_desc: "Dashboard météo interactif. 1er prix IUT + qualification finale nationale Power BI.",
+    proj_web_title: 'Collecte Automatisée Web',
+    proj_web_desc: "Système Python collectant les commerces parisiens via APIs data.gouv.fr et Google Maps.",
+    proj_bench_title: 'Automatisation Base Benchmark',
+    proj_bench_desc: "Solution R automatisant la mise à jour d'une base benchmark chez Kantar Worldpanel.",
+    open_hint: 'Ouvrir ↗',
+    about_label: 'À propos', about_title: 'Qui suis-je ?',
+    about_p1: 'Actuellement en alternance chez <strong>Kantar Worldpanel</strong>, je développe des solutions R pour automatiser les workflows data et produire des insights actionnables.',
+    about_p2: "Je recherche une <strong>alternance à partir de Septembre 2026</strong> pour continuer mes études en Master, avec une ambition claire : aller plus loin dans la data science appliquée.",
+    stat_exp: 'Expérience', stat_years: 'ans', stat_proj: 'Projets',
+    stat_avail: 'Disponibilité', stat_loc: 'Localisation',
+    parcours_label: 'Expériences & Formation', parcours_title: 'Parcours',
+    tl_apprentice: 'Alternance', tl_education: 'Formation', tl_diploma: 'Diplôme',
+    tl_kantar_role: 'Data Scientist — Alternant',
+    tl_kantar_desc: "Automatisation de workflows data en R, mise à jour de bases benchmark, génération de rapports automatiques et analyse des études média pour l'équipe Insights.",
+    tag_ts: 'Séries temporelles', tag_auto: 'Automatisation',
+    tl_iut_role: 'BUT Science des Données',
+    tl_iut_desc: "Formation en statistiques, machine learning, visualisation de données, bases de données et développement logiciel. Projets transversaux en équipe sur des données réelles.",
+    tl_bac_org: 'Baccalauréat Général', tl_bac_role: 'Spécialités Maths & NSI',
+    tl_bac_desc: "Baccalauréat général avec spécialités Mathématiques et Numérique & Sciences Informatiques, orienté vers les sciences quantitatives et la programmation.",
+    tag_math: 'Mathématiques',
+    skills_label: 'Stack technique', skills_title: 'Compétences',
+    sk_lang_label: 'Langages', sk_lang_title: 'Code',
+    sk_stats: 'Statistiques', sk_viz_label: 'Visualisation',
+    sk_eng_label: 'Ingénierie', sk_eng_title: 'Automatisation',
+    sk_eco_label: 'Outils & Environnements', sk_eco_title: 'Écosystème',
+    sk_soft_label: 'Compétences humaines',
+    soft_1: 'Communication orale', soft_2: 'Travail en équipe', soft_3: 'Rédaction rapports',
+    soft_4: 'Gestion de projet', soft_5: 'Esprit analytique', soft_6: 'Bases économie',
+    contact_title: "Travaillons<br>ensemble.",
+    contact_desc: "Disponible pour une alternance en septembre 2026 en bac +4 sur deux ans. Ouvert aux opportunités en data science, analyse et machine learning.",
+    contact_status: 'Disponible — <strong>Alternance Sept 2026</strong>',
+    info_formation: 'Formation actuelle', info_alternance: 'Alternance actuelle',
+    info_objectif: 'Objectif', info_objectif_val: 'Master Machine Learning & Data Science · Sept 2026',
+    info_loc: 'Localisation',
+    m_desc: 'Description', m_method: 'Méthodologie', m_stack: 'Stack', m_github: 'GitHub ↗'
+  }
+};
 
+let currentLang = 'en';
 
+function setLang(lang) {
+  currentLang = lang;
+  const t = translations[lang];
+  // Update all data-i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) {
+      el.innerHTML = t[key];
+    }
+  });
+  // Update lang buttons
+  document.getElementById('btnEN').classList.toggle('active', lang === 'en');
+  document.getElementById('btnFR').classList.toggle('active', lang === 'fr');
+  document.getElementById('btnEN2').classList.toggle('active', lang === 'en');
+  document.getElementById('btnFR2').classList.toggle('active', lang === 'fr');
+  // Update typewriter words
+  currentWords = lang === 'en' ? wordsEN : wordsFR;
+  // Update document lang
+  document.documentElement.lang = lang;
+}
 
-    <!-- Modal Projet 4: Renault Financial Analysis -->
-<div class="modal fade" id="projectModal4" tabindex="-1" aria-labelledby="projectModal4Label" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="projectModal4Label">Renault Financial Analysis</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+/* ── NOTHING DOT-MATRIX CANVAS ── */
+(function() {
+  const canvas = document.getElementById('dotCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = 320, H = 320;
+  const DOT = 5, GAP = 14;
+  const cols = Math.floor(W / GAP);
+  const rows = Math.floor(H / GAP);
+  function getColor() {
+    return document.documentElement.getAttribute('data-theme') === 'light'
+      ? 'rgba(0,0,0,' : 'rgba(255,255,255,';
+  }
+  const dots = [];
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      dots.push({
+        x: c * GAP + GAP / 2, y: r * GAP + GAP / 2,
+        baseOpacity: Math.random() * 0.18 + 0.04,
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.4 + Math.random() * 0.6,
+        highlighted: false,
+      });
+    }
+  }
+  const nGlyph = [
+    [1,1],[1,2],[1,3],[1,4],[1,5],[1,6],[1,7],[1,8],
+    [2,2],[2,3],[3,4],[3,5],[4,6],[4,7],
+    [5,1],[5,2],[5,3],[5,4],[5,5],[5,6],[5,7],[5,8],
+  ];
+  const cGlyph = [
+    [8,1],[8,2],[8,3],[8,4],[8,5],[8,6],[8,7],[8,8],
+    [9,1],[9,8],[10,1],[10,8],
+  ];
+  [...nGlyph, ...cGlyph].forEach(([c, r]) => {
+    const idx = r * cols + c;
+    if (dots[idx]) dots[idx].highlighted = true;
+  });
+  let startTime = null;
+  function animate(ts) {
+    if (!startTime) startTime = ts;
+    const elapsed = (ts - startTime) / 1000;
+    ctx.clearRect(0, 0, W, H);
+    const baseCol = getColor();
+    dots.forEach(d => {
+      const ambient = (Math.sin(elapsed * d.speed + d.phase) * 0.5 + 0.5) * d.baseOpacity;
+      if (d.highlighted) {
+        const pulse = 0.55 + Math.sin(elapsed * 1.5 + d.phase) * 0.25;
+        ctx.beginPath(); ctx.arc(d.x, d.y, DOT, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(232,48,42,${pulse})`; ctx.fill();
+      } else {
+        ctx.beginPath(); ctx.arc(d.x, d.y, DOT * 0.7, 0, Math.PI * 2);
+        ctx.fillStyle = baseCol + ambient + ')'; ctx.fill();
+      }
+    });
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+})();
 
-            <div class="modal-body">
+/* ── CLOCK WIDGET ── */
+function updateClock() {
+  const now = new Date();
+  const el = document.getElementById('nwTime');
+  if (el) el.textContent = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+}
+updateClock();
+setInterval(updateClock, 1000);
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const w = document.getElementById('nothingWidget');
+    if (w) w.classList.add('visible');
+  }, 2200);
+});
 
-                <!-- Carrousel d'images -->
-                <div id="carouselProject4" class="carousel slide mb-4" data-bs-ride="carousel">
-                    <div class="carousel-inner">
+/* ── PROJECT DATA (bilingual) ── */
+const projects = {
+  sncf: {
+    num:'01 —',
+    en: { label:'01 — Data Analysis', title:'Network & Infrastructure Analysis SNCF', coverTitle:'SNCF · Network Analysis',
+      desc:"This analysis supports SNCF Réseau's core mission: ensuring a reliable and safe network. The project explores how joint analysis of network and infrastructure data improves understanding of incidents.",
+      method:['Data preparation and cleaning in R','Descriptive analysis of network incidents','Power BI dashboard design','Results presentation'],
+    },
+    fr: { label:'01 — Analyse de données', title:'Analyse Réseaux & Infrastructure SNCF', coverTitle:'SNCF · Analyse Réseau',
+      desc:"L'analyse s'inscrit dans la mission centrale de SNCF Réseau : garantir un réseau fiable et sécurisé. Le projet explore comment l'analyse conjointe des données réseau et infrastructure améliore la compréhension des incidents.",
+      method:['Préparation et nettoyage des données avec R','Analyse descriptive des incidents réseau','Conception du dashboard Power BI','Présentation des résultats'],
+    },
+    tags:['R','Power BI','Data SNCF'], date:'January 2026', github:'https://github.com/NathanChan1710'
+  },
+  renault: {
+    num:'02 —',
+    en: { label:'02 — Finance & Data', title:'Renault Financial Analysis', coverTitle:'Renault · Finance',
+      desc:"In-depth analysis of Renault stock data (CAC40). Combines Python automation for live data retrieval with advanced Power BI visualization.",
+      method:['Automatic retrieval via Python / Yfinance','Power BI dashboard with financial KPIs','Technical analysis: candlestick and moving averages'],
+    },
+    fr: { label:'02 — Finance & Data', title:'Renault Financial Analysis', coverTitle:'Renault · Finance',
+      desc:"Analyse approfondie des données boursières de l'action Renault (CAC40). Combine l'automatisation Python pour la récupération en direct avec la visualisation avancée dans Power BI.",
+      method:['Récupération automatique via Python / Yfinance','Dashboard Power BI avec KPIs financiers','Analyse technique : candlestick et moyennes mobiles'],
+    },
+    tags:['Python','Power BI','Yfinance','Excel'], date:'January 2026', github:'https://github.com/NathanChan1710/Renault-Financial-Analysis'
+  },
+  scoring: {
+    num:'03 —',
+    en: { label:'03 — Machine Learning', title:'Repurchase Scoring Model', coverTitle:'Scoring · ML',
+      desc:"R program that cleans a travel agency dataset to model the probability of customer repurchase using an unsupervised approach.",
+      method:['Data cleaning and preparation','Analysis of variables driving repurchase','Unsupervised modeling (clustering)','Score visualization in Power BI'],
+    },
+    fr: { label:'03 — Machine Learning', title:'Scoring de Réacheteurs', coverTitle:'Scoring · ML',
+      desc:"Programme R qui nettoie un jeu de données d'agence de voyage pour modéliser la probabilité de réachat d'un client par approche non supervisée.",
+      method:['Nettoyage et préparation de la base','Analyse des variables qui drivent le réachat','Modélisation non supervisée (clustering)','Visualisation des scores dans Power BI'],
+    },
+    tags:['R','Power BI','Machine Learning'], date:'December 2025', github:'https://github.com/NathanChan1710/Scoring-r-achat'
+  },
+  dataviz: {
+    num:'04 —',
+    en: { label:'04 — 🏆 Competition', title:'DataViz Contest Power BI — 1st Prize', coverTitle:'DataViz · 🏆 1st Prize',
+      desc:"Interactive dashboard to analyze meteorological data. The team won 1st prize at IUT and qualified for the national final.",
+      method:['Collection and integration of weather data','Interactive and dynamic visualizations','UX/UI design focused on accessibility','Oral presentation before jury'],
+    },
+    fr: { label:'04 — 🏆 Compétition', title:'Concours DataViz Power BI — 1er Prix', coverTitle:'DataViz · 🏆 1er Prix',
+      desc:"Dashboard interactif pour analyser des données météorologiques. L'équipe a remporté le 1er prix de l'IUT et s'est qualifiée pour la finale nationale.",
+      method:['Collecte et intégration de données météo','Visualisations interactives et dynamiques',"Design UX/UI centré sur l'accessibilité",'Présentation orale devant jury'],
+    },
+    tags:['Power BI','Excel','DAX'], date:'May 2024', github:'https://github.com/NathanChan1710'
+  },
+  web: {
+    num:'05 —',
+    en: { label:'05 — Data Engineering', title:'Automated Web Data Collection', coverTitle:'Web Scraping · API',
+      desc:"Automated system to collect Paris business data via data.gouv.fr and Google Maps APIs, with automatic website detection.",
+      method:['data.gouv & Google Maps API integration','Web scraping and geolocated extraction','Automatic database enrichment','Error handling and validation'],
+    },
+    fr: { label:'05 — Ingénierie Data', title:'Collecte Automatisée de Données Web', coverTitle:'Web Scraping · API',
+      desc:"Système automatisé pour collecter les données des commerces parisiens via API data.gouv.fr et Google Maps, avec détection automatique des sites web.",
+      method:['Intégration APIs data.gouv & Google Maps','Web scraping et extraction géolocalisée',"Enrichissement automatique d'une base",'Gestion d\'erreurs et validation'],
+    },
+    tags:['Python','API REST','Web Scraping','Pandas'], date:'March 2025', github:'https://github.com/NathanChan1710'
+  },
+  benchmark: {
+    num:'06 —',
+    en: { label:'06 — Automation · Kantar', title:'Benchmark Database Automation', coverTitle:'Kantar · Automation',
+      desc:"R solution to automate benchmark database updates at Kantar Worldpanel, enabling continuous evaluation of media study performance.",
+      method:['Automation of repetitive tasks','Integration of multiple data sources','Validation and quality control','Automatic reports via RMarkdown'],
+    },
+    fr: { label:'06 — Automatisation · Kantar', title:'Automatisation Base Benchmark', coverTitle:'Kantar · Automatisation',
+      desc:"Solution R pour automatiser la mise à jour d'une base benchmark chez Kantar Worldpanel, permettant d'évaluer en continu la performance des études média.",
+      method:['Automatisation des tâches répétitives','Intégration de multiples sources de données','Validation et contrôle qualité','Rapports automatiques via RMarkdown'],
+    },
+    tags:['R','Excel','Automation','RMarkdown'], date:'April 2025 — Kantar Worldpanel', github:'https://github.com/NathanChan1710'
+  }
+};
 
-                        <div class="carousel-item active">
-                            <img src="Image/renault_dataviz_1.png" class="d-block w-100 rounded" alt="Renault Financial Analysis">
-                        </div>
+function openFolder(card, id) {
+  const p = projects[id];
+  const l = p[currentLang] || p['en'];
+  const t = translations[currentLang];
+  card.classList.add('opening');
+  setTimeout(() => card.classList.remove('opening'), 420);
+  document.getElementById('fmTabNum').setAttribute('data-num', p.num);
+  document.getElementById('fmCoverLabel').textContent = l.label;
+  document.getElementById('fmCoverTitle').textContent = l.coverTitle;
+  document.getElementById('fmPaperInner').innerHTML = `
+    <p class="fm-label">${l.label}</p>
+    <h2 class="fm-title">${l.title}</h2>
+    <p class="fm-section">${t.m_desc}</p>
+    <p>${l.desc}</p>
+    <p class="fm-section">${t.m_method}</p>
+    <ul>${l.method.map(m=>`<li>${m}</li>`).join('')}</ul>
+    <p class="fm-section">${t.m_stack}</p>
+    <div class="fm-tags">${p.tags.map(tag=>`<span class="fm-tag">${tag}</span>`).join('')}</div>
+    <div class="fm-footer"><span class="fm-date">${p.date}</span><a href="${p.github}" target="_blank" class="fm-github">${t.m_github}</a></div>
+  `;
+  setTimeout(() => {
+    const modal = document.getElementById('folderModal');
+    modal.classList.remove('closing');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    document.querySelector('.fm-paper').scrollTop = 0;
+  }, 180);
+}
 
-                        <div class="carousel-item">
-                            <img src="Image/renault_dataviz_2.png" class="d-block w-100 rounded" alt="Image 2">
-                        </div>
+function closeFolder() {
+  const modal = document.getElementById('folderModal');
+  modal.classList.add('closing');
+  setTimeout(() => { modal.classList.remove('active','closing'); document.body.style.overflow = ''; }, 400);
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFolder(); });
 
-                        <div class="carousel-item">
-                            <img src="Image/renault_dataviz_3.png" class="d-block w-100 rounded" alt="Image 3">
-                        </div>
+/* ── THEME ── */
+const checkbox = document.getElementById('themeCheckbox');
+const checkbox2 = document.getElementById('themeCheckbox2');
+const labelEl  = document.getElementById('themeLabel');
 
-                        <div class="carousel-item">
-                            <img src="Image/renault_dataviz_4.png" class="d-block w-100 rounded" alt="Image 4">
-                        </div>
+function applyTheme(isLight) {
+  document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
+  labelEl.textContent = isLight ? 'Light' : 'Dark';
+  checkbox.checked = isLight;
+  checkbox2.checked = isLight;
+}
 
-                    </div>
+checkbox.addEventListener('change', () => applyTheme(checkbox.checked));
+checkbox2.addEventListener('change', () => applyTheme(checkbox2.checked));
 
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselProject4" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselProject4" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                    </button>
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
 
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselProject4" data-bs-slide-to="0" class="active"></button>
-                        <button type="button" data-bs-target="#carouselProject4" data-bs-slide-to="1"></button>
-                        <button type="button" data-bs-target="#carouselProject4" data-bs-slide-to="2"></button>
-                        <button type="button" data-bs-target="#carouselProject4" data-bs-slide-to="3"></button>
-                    </div>
-                </div>
+/* ── HAMBURGER ── */
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+function closeMobileMenu() {
+  hamburgerBtn.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}
+hamburgerBtn.addEventListener('click', () => {
+  const isOpen = hamburgerBtn.classList.toggle('open');
+  mobileMenu.classList.toggle('open', isOpen);
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+});
 
-                <h6 class="fw-bold mb-3">Description du projet</h6>
-                <div class="modal-meta">
-                    <span class="meta-badge">Finance</span>
-                    <span class="meta-badge">Data Visualization</span>
-                    <div class="modal-date">Janvier 2026</div>
-                </div>
+/* ── TYPEWRITER ── */
+const wordsEN = ['data_scientist()','make_data_talk()','python + r + sql','machine_learning()','data_visualization()','build_insights()'];
+const wordsFR = ['data_scientist()','parler_la_donnée()','python + r + sql','machine_learning()','data_visualisation()','créer_des_insights()'];
+let currentWords = wordsEN;
+let wi=0, ci=0, deleting=false;
+const tw = document.getElementById('typewriter');
+function type() {
+  const word = currentWords[wi % currentWords.length];
+  if (!deleting) {
+    tw.textContent = word.slice(0, ++ci);
+    if (ci === word.length) { deleting=true; setTimeout(type,1800); return; }
+    setTimeout(type, 65);
+  } else {
+    tw.textContent = word.slice(0, --ci);
+    if (ci === 0) { deleting=false; wi=(wi+1)%currentWords.length; setTimeout(type,300); return; }
+    setTimeout(type, 35);
+  }
+}
+setTimeout(type, 1400);
 
-                <p>Analyse approfondie des données boursières de l'action Renault (composante du CAC40). Ce projet combine l'automatisation Python pour la récupération de données en direct avec la visualisation avancée dans PowerBI, permettant une analyse financière complète et actualisée.</p>
+/* ── SCROLL REVEAL ── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('visible');
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-                <h6 class="fw-bold mb-3 mt-4">Méthodologie</h6>
-                <ul>
-                    <li>Récupération automatique des données boursières via le package Python Yfinance</li>
-                    <li>Script Python pour charger les données en direct et les transformer</li>
-                    <li>Construction d'un dashboard PowerBI avec KPIs financiers clés</li>
-                    <li>Analyse technique avec candlestick et moyennes mobiles</li>
-                </ul>
-
-                <h6 class="fw-bold mb-3 mt-4">Technologies utilisées</h6>
-                <div class="mb-3">
-                    <span class="custom-badge badge-info">PowerBI</span>
-                    <span class="custom-badge badge-info">Python</span>
-                    <span class="custom-badge badge-info">Yfinance</span>
-                    <span class="custom-badge badge-info">Données boursières</span>
-                </div>
-
-                <h6 class="fw-bold mb-3 mt-4">Résultats & Conclusions</h6>
-                <div class="modal-results">
-                    <p><strong>Événement clé analysé :</strong> Abaissement des prévisions 2025 par Renault</p>
-                    <ul style="margin-top: 0.5rem;">
-                        <li><strong>Marge opérationnelle :</strong> Passage de 7% à 6,5% pour 2025</li>
-                        <li><strong>Leadership :</strong> Nomination d'un CEO intérimaire ajoutant de l'incertitude</li>
-                        <li><strong>Impact boursier :</strong> Analyse des mouvements de prix et volatilité avant/après annonce</li>
-                        <li><strong>KPIs du dashboard :</strong> Variation de cours, volumes d'échange, moyennes mobiles (20j, 50j, 200j)</li>
-                    </ul>
-                </div>
-
-                <div class="mt-4">
-                    <small class="text-muted">Projet académique - Janvier 2026</small>
-                </div>
-
-                <div class="mt-3">
-                    <a href="https://github.com/NathanChan1710/Renault-Financial-Analysis" target="_blank" rel="noopener" class="btn btn-sm btn-github">
-                        <i class="fab fa-github me-2"></i>Voir sur GitHub
-                    </a>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-    <!-- Modal Projet 5: Data Mining -->
-    <div class="modal fade" id="projectModal5" tabindex="-1" aria-labelledby="projectModal5Label" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="projectModal5Label">scoring de réacheteurs</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="modal-project-image mb-4">
-                        <img src="Image/datamining_pbi.png" alt="Renault Financial Analysis" class="img-fluid rounded">
-                    </div>
-                    <h6 class="fw-bold mb-3">Description du projet</h6>
-                    <div class="modal-meta">
-                        <span class="meta-badge">Machine Learning</span>
-                        <span class="meta-badge">Data Visualization</span>
-                        <div class="modal-date">Décembre 2025</div>
-                    </div>
-                    <p>Création d'un programme informatique en R qui nettoie un jeu de données d'agence de voyage pour créer un score de réachat qui modélise la probabilité de réachat d'un client.</p>
-
-                    <h6 class="fw-bold mb-3 mt-4">Méthodologie</h6>
-                    <ul>
-                        <li>Nettoyage de la base de données sur l'année N-1</li>
-                        <li>Compréhension des variables qui drivent le réachat</li>
-                        <li>Répliquation sur la base de l'année en cours</li>
-                        <li>Visualisation des résultats dans PowerBI </li>
-                    </ul>
-
-                    <h6 class="fw-bold mb-3 mt-4">Technologies utilisées</h6>
-                    <div class="mb-3">
-                        <span class="custom-badge badge-info">R</span>
-                        <span class="custom-badge badge-info">Non suppervisé</span>
-                        <span class="custom-badge badge-info">Scoring</span>
-                        <span class="custom-badge badge-info">PowerBI</span>
-                    </div>
-
-                    <h6 class="fw-bold mb-3 mt-4">Résultats & Conclusions</h6>
-                    <div class="modal-results">
-                        <p><strong>Événement clé analysé :</strong> Nombre de réacheteurs </p>
-                        <ul style="margin-top: 0.5rem;">
-                            <li><strong>Marge opérationnelle :</strong> Passage de 7% à 6,5% pour 2025</li>
-                            <li><strong>Leadership :</strong> Nomination d'un CEO intérimaire ajoutant de l'incertitude</li>
-                            <li><strong>Impact boursier :</strong> Analyse des mouvements de prix et volatilité avant/après annonce</li>
-                            <li><strong>KPIs du dashboard :</strong> Variation de cours, volumes d'échange, moyennes mobiles (20j, 50j, 200j)</li>
-                        </ul>
-                    </div>
-
-                    <div class="mt-4">
-                        <small class="text-muted">Projet académique - Décembre 2025</small>
-                    </div>
-                    <div class="mt-3">
-                        <a href="https://github.com/NathanChan1710/Scoring-r-achat" target="_blank" rel="noopener" class="btn btn-sm btn-github">
-                            <i class="fab fa-github me-2"></i>Voir sur GitHub
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const navbar = document.querySelector('.navbar');
-            const navHeight = navbar ? navbar.offsetHeight : 0;
-
-            // ============ Smooth scroll navigation ============
-            document.querySelectorAll('a[href^="#"]').forEach(link => {
-                link.addEventListener('click', function (e) {
-                    const href = this.getAttribute('href');
-                    if (!href || href === '#' || href === '#!') return;
-                    const target = document.querySelector(href);
-                    if (target) {
-                        e.preventDefault();
-                        const rect = target.getBoundingClientRect();
-                        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                        const targetY = rect.top + scrollTop - navHeight - 12;
-                        window.scrollTo({ top: targetY, behavior: 'smooth' });
-
-                        const openCollapse = document.querySelector('.navbar-collapse.show');
-                        if (openCollapse && typeof bootstrap !== 'undefined') {
-                            const bs = bootstrap.Collapse.getInstance(openCollapse) || new bootstrap.Collapse(openCollapse);
-                            bs.hide();
-                        }
-                    }
-                });
-            });
-
-            // ============ Scroll Reveal Animation ============
-            const revealElements = document.querySelectorAll('.card-modern, .skill-item, .timeline-item, .project-card-clickable');
-            
-            if ('IntersectionObserver' in window) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('reveal', 'revealed');
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, {
-                    threshold: 0.1,
-                    rootMargin: '0px 0px -100px 0px'
-                });
-
-                revealElements.forEach(el => {
-                    el.classList.add('reveal');
-                    observer.observe(el);
-                });
-            } else {
-                // Fallback for older browsers
-                revealElements.forEach(el => {
-                    el.classList.add('revealed');
-                });
-            }
-
-            // Toggle dark mode icon (lune <-> soleil)
-            const darkToggle = document.getElementById('dark-toggle');
-            const darkIcon = document.querySelector('label[for="dark-toggle"] i');
-            function updateThemeIcon() {
-                if (!darkIcon || !darkToggle) return;
-                if (darkToggle.checked) {
-                    darkIcon.classList.remove('fa-moon');
-                    darkIcon.classList.add('fa-sun');
-                } else {
-                    darkIcon.classList.remove('fa-sun');
-                    darkIcon.classList.add('fa-moon');
-                }
-            }
-            darkToggle.addEventListener('change', updateThemeIcon);
-            // initial state
-            updateThemeIcon();
-        });
-    </script>
+/* ── INIT: light mode + EN ── */
+applyTheme(true);
+setLang('en');
+</script>
 </body>
 </html>
-
