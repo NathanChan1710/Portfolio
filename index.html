@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
@@ -503,41 +503,35 @@
       background: var(--folder-paper);
       overflow-y: auto;
       gap: 0;
-      padding: 20px 20px 20px 12px;
-    }
-
-    /* Subtle ambient glow behind images */
-    .fm-right::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 60% 40%, rgba(232,48,42,0.04) 0%, transparent 60%);
-      pointer-events: none; z-index: 0;
+      padding: 0;
+      justify-content: flex-start;
     }
 
     /* Stacked image items */
     .fm-img-stack {
       display: flex; flex-direction: column;
-      width: 100%; flex: 1;
+      width: 100%; height: 100%;
       position: relative; z-index: 1;
-      gap: 10px;
+      gap: 4px;
     }
     .fm-img-item {
       position: relative; width: 100%;
-      flex: 1; min-height: 0;
+      aspect-ratio: 16 / 9;
       overflow: hidden;
-      border-bottom: none;
+      flex-shrink: 0;
+    }
+    .fm-img-stack:has(.fm-img-item:only-child) .fm-img-item {
+      aspect-ratio: unset;
+      flex: 1;
     }
     .fm-img-item img {
       width: 100%; height: 100%;
       object-fit: cover; display: block;
-      transition: transform 0.5s ease;
     }
-    .fm-img-item:hover img { transform: scale(1.04); }
     .fm-img-item .fm-img-placeholder {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       gap: 12px; color: var(--text3); width: 100%; height: 100%; min-height: 120px;
       font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-      background: var(--folder-paper);
     }
     .fm-img-item .fm-img-placeholder svg { opacity: 0.2; }
 
@@ -815,13 +809,14 @@
     <span id="typewriter"></span>
   </div>
   <p class="hero-desc" data-i18n="hero_desc">
-    Student in Data Science at IUT Paris Rives de Seine,<br>
-    apprentice at Kantar Worldpanel. I turn raw data<br>
-    into informed decisions — through analysis, code, and visualization.
+    Passionate about artificial intelligence, future Master's student in Machine Learning & Data Science,<br>
+    currently finishing my apprenticeship in the B.Sc. Data Science program at IUT Paris Rives de Seine.<br>
+    I want to learn more and understand the stakes of AI in tomorrow's world.
   </p>
   <div class="hero-cta">
     <a href="#projects" class="btn btn-primary" id="heroProjectsBtn"><span class="btn-inner" data-i18n="hero_cta_projects">View projects ↗</span></a>
     <a href="#contact" class="btn btn-ghost"><span class="btn-inner" data-i18n="hero_cta_contact">Get in touch</span></a>
+    <a href="Images/Nathan_ChanSingMan_CV.pdf" download class="btn btn-ghost"><span class="btn-inner" data-i18n="hero_cta_cv">Download CV ↓</span></a>
   </div>
 </section>
 
@@ -833,8 +828,8 @@
   <h2 class="section-title reveal" data-i18n="about_title">Who am I?</h2>
   <div class="about-grid">
     <div class="about-text reveal">
-      <p data-i18n="about_p1">Currently an apprentice at <strong>Kantar Worldpanel</strong>, I develop R solutions to automate data workflows and produce actionable insights.</p>
-      <p data-i18n="about_p2">I'm looking for an <strong>apprenticeship starting September 2026</strong> to continue my Master's studies, with a clear ambition: going further in applied data science.</p>
+      <p data-i18n="about_p1">Currently an apprentice at <strong>Kantar Worldpanel</strong> as a data scientist for 2 years, I develop solutions to automate data workflows and build new dashboards for decision-making.</p>
+      <p data-i18n="about_p2">I'm looking for an <strong>apprenticeship starting September 2026</strong> for a Master's in Machine Learning & Data Science, with a clear ambition: going further in data science to develop more skills in machine learning.</p>
     </div>
     <div class="reveal reveal-delay-2">
       <div class="stat-row"><span class="stat-label" data-i18n="stat_exp">Experience</span><span class="stat-value">2<span data-i18n="stat_years">yrs</span></span></div>
@@ -1134,6 +1129,10 @@
           <div><div class="contact-link-label">GitHub</div><div class="contact-link-value">NathanChan1710</div></div>
           <span class="contact-link-arrow">↗</span>
         </a>
+        <a href="Images/CV_Nathan_Chan Sing Man.pdf" download class="contact-link">
+          <div><div class="contact-link-label" data-i18n="cv_label">Curriculum Vitae</div><div class="contact-link-value" data-i18n="cv_value">CV_Nathan_Chan.pdf</div></div>
+          <span class="contact-link-arrow">↓</span>
+        </a>
       </div>
     </div>
     <div class="reveal reveal-delay-2">
@@ -1309,8 +1308,8 @@ const translations = {
     nav_projects: 'Projects', nav_contact: 'Contact',
     widget_available: 'Available',
     hero_label: 'Data Scientist · Apprentice',
-    hero_desc: 'Student in Data Science at IUT Paris Rives de Seine,\napprentice at Kantar Worldpanel. I turn raw data\ninto informed decisions — through analysis, code, and visualization.',
-    hero_cta_projects: 'View projects ↗', hero_cta_contact: 'Get in touch',
+    hero_desc: "Passionate about artificial intelligence, future Master's student in Machine Learning & Data Science, currently finishing my apprenticeship in the B.Sc. Data Science program at IUT Paris Rives de Seine. I want to learn more and understand the stakes of AI in tomorrow's world.",
+    hero_cta_projects: 'View projects ↗', hero_cta_contact: 'Get in touch', hero_cta_cv: 'Download CV ↓',
     projects_label: 'Selected works', projects_title: 'Projects',
     proj_sncf_title: 'Network & Infrastructure Analysis SNCF',
     proj_sncf_desc: 'Exploring the link between network data and incidents. Power BI dashboard for SNCF Réseau.',
@@ -1325,8 +1324,8 @@ const translations = {
     proj_bench_desc: 'R solution automating benchmark base updates at Kantar Worldpanel.',
     open_hint: 'Open ↗',
     about_label: 'About', about_title: 'Who am I?',
-    about_p1: 'Currently an apprentice at <strong>Kantar Worldpanel</strong>, I develop R solutions to automate data workflows and produce actionable insights.',
-    about_p2: "I'm looking for an <strong>apprenticeship starting September 2026</strong> to continue my Master's studies, with a clear ambition: going further in applied data science.",
+    about_p1: 'Currently an apprentice at <strong>Kantar Worldpanel</strong> as a data scientist for 2 years, I develop solutions to automate data workflows and build new dashboards for decision-making.',
+    about_p2: "I'm looking for an <strong>apprenticeship starting September 2026</strong> for a Master's in Machine Learning & Data Science, with a clear ambition: going further in data science to develop more skills in machine learning.",
     stat_exp: 'Experience', stat_years: 'yrs', stat_proj: 'Projects',
     stat_avail: 'Available', stat_loc: 'Location',
     parcours_label: 'Experience & Education', parcours_title: 'Journey',
@@ -1353,6 +1352,7 @@ const translations = {
     info_formation: 'Current studies', info_alternance: 'Current apprenticeship',
     info_objectif: 'Goal', info_objectif_val: 'Master in ML & Data Science · Sept 2026',
     info_loc: 'Location',
+    cv_label: 'Curriculum Vitae', cv_value: 'CV_Nathan_Chan.pdf',
     // project modal translations
     m_desc: 'Description', m_method: 'Methodology', m_stack: 'Stack', m_github: 'GitHub ↗',
     // all projects page
@@ -1372,7 +1372,7 @@ const translations = {
     widget_available: 'Disponible',
     hero_label: 'Data Scientist · Alternant',
     hero_desc: "Passionné par l'intelligence artificielle, futur étudiant en Master Machine Learning & Data Science, actuellement en fin d'alternance dans le BUT Science des Données à l'IUT Paris Rives de Seine. J'ai envie d'en apprendre plus et de comprendre les enjeux de l'IA dans le monde de demain.",
-    hero_cta_projects: 'Voir les projets ↗', hero_cta_contact: 'Me contacter',
+    hero_cta_projects: 'Voir les projets ↗', hero_cta_contact: 'Me contacter', hero_cta_cv: 'Télécharger CV ↓',
     projects_label: 'Travaux sélectionnés', projects_title: 'Projets',
     proj_sncf_title: 'Analyse Réseaux & Infrastructure SNCF',
     proj_sncf_desc: "Exploration de la liaison entre données réseau et incidents. Dashboard Power BI pour SNCF Réseau.",
@@ -1415,6 +1415,7 @@ const translations = {
     info_formation: 'Formation actuelle', info_alternance: 'Alternance actuelle',
     info_objectif: 'Objectif', info_objectif_val: 'Master Machine Learning & Data Science · Sept 2026',
     info_loc: 'Localisation',
+    cv_label: 'Curriculum Vitae', cv_value: 'CV_Nathan_Chan.pdf',
     m_desc: 'Description', m_method: 'Méthodologie', m_stack: 'Stack', m_github: 'GitHub ↗',
     // page tous les projets
     all_projects_btn: 'Voir tous les projets ↗', all_projects_label: 'Tous les travaux', all_projects_title: 'Tous les Projets',
@@ -1665,11 +1666,13 @@ function openFolder(card, id) {
     const imgName = `${id}_${i}`;
     const item = document.createElement('div');
     item.className = 'fm-img-item';
-    item.innerHTML = `
-      <img src="Images/${imgName}.png" alt="${imgName}" onerror="this.parentNode.innerHTML='<div class=\\'fm-img-placeholder\\'><svg width=\\'48\\' height=\\'48\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1\\'><rect x=\\'3\\' y=\\'3\\' width=\\'18\\' height=\\'18\\' rx=\\'2\\'/><circle cx=\\'8.5\\' cy=\\'8.5\\' r=\\'1.5\\'/><path d=\\'m21 15-5-5L5 21\\'/></svg><span>${imgName}.png</span></div>'">
-    `;
+    item.innerHTML = `<img src="Images/${imgName}.png" alt="${imgName}" onerror="this.parentNode.remove(); if(!document.getElementById('fmImgStack').children.length) document.querySelector('.fm-right').style.display='none'">`;
+
+
     stack.appendChild(item);
   }
+  // Reset fm-right visibility
+  document.querySelector('.fm-right').style.display = '';
 
   setTimeout(() => {
     const modal = document.getElementById('folderModal');
