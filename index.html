@@ -50,7 +50,6 @@
     "knowsAbout": ["Python", "R", "Machine Learning", "Power BI", "Data Science", "Data Engineering"]
   }
   </script>
-
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -123,7 +122,7 @@
 
     /* ── NAV ── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 600;
       display: flex; justify-content: space-between; align-items: center;
       padding: 18px 48px; border-bottom: 1px solid transparent;
       transition: border-color 0.4s, background 0.4s;
@@ -203,7 +202,7 @@
     .mobile-menu {
       display: none;
       position: fixed; top: 72px; left: 12px; right: 12px;
-      z-index: 490;
+      z-index: 590;
       background: var(--nav-bg);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
@@ -580,9 +579,27 @@
 
     /* Responsive */
     @media (max-width: 700px) {
-      .fm-scene { grid-template-columns: 1fr; grid-template-rows: auto auto; height: min(800px, 92vh); width: 95vw; }
-      .fm-left { padding: 28px 24px 20px; }
-      .fm-right { min-height: 260px; max-height: 300px; }
+      .fm-scene {
+        width: 95vw;
+        max-height: 92vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      /* Text on top, scrollable, images inside the scroll at the bottom */
+      .fm-left {
+        order: 1;
+        padding: 36px 20px 20px;
+        overflow-y: auto;
+        flex: 1;
+        justify-content: flex-start;
+        -webkit-overflow-scrolling: touch;
+      }
+      /* Images at the bottom of the scroll, not fixed */
+      .fm-right {
+        order: 1; /* inside fm-left scroll via different approach below */
+        display: none; /* hidden — images injected into fm-left on mobile */
+      }
       .fm-img-stack { flex-direction: row; }
       .fm-img-item { border-bottom: none; border-right: 1px solid var(--border); }
       .fm-img-item:last-child { border-right: none; }
@@ -692,13 +709,13 @@
       #allProjectsGrid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
       #allProjectsGrid .folder-card { margin-top: 10px; }
       #allProjectsGrid .folder-body { padding: 14px 12px 12px; }
-      #allProjectsGrid .folder-title { font-size: 11px; }
-      #allProjectsGrid .folder-desc { font-size: 10px; line-height: 1.6; }
+      #allProjectsGrid .folder-title { font-size: 12px; }
+      #allProjectsGrid .folder-desc { font-size: 11px; line-height: 1.65; }
       #allProjectsGrid .folder-num { font-size: 9px; }
-      #allProjectsGrid .ftag { font-size: 8px; padding: 2px 5px; }
+      #allProjectsGrid .ftag { font-size: 8px; padding: 2px 6px; }
       #allProjectsGrid .folder-date { font-size: 9px; }
       #allProjectsGrid .folder-open-hint { font-size: 9px; }
-      #allProjectsPage > div + div { padding: 90px 16px 60px !important; }
+      #allProjectsPage > div + div { padding: 100px 16px 60px !important; }
       .filter-bar { gap: 6px; }
       .filter-pill { font-size: 9px; padding: 5px 10px; }
 
@@ -777,6 +794,17 @@
       display: none;
     }
 
+    /* Mobile images inside modal scroll */
+    .fm-mobile-images { display: none; }
+    @media (max-width: 700px) {
+      .fm-mobile-images {
+        display: flex; flex-direction: column; gap: 8px;
+        margin-top: 24px; padding-top: 16px;
+        border-top: 1px solid var(--border);
+      }
+      .fm-mobile-images img { width: 100%; border-radius: 6px; display: block; }
+    }
+
   </style>
 </head>
 <body>
@@ -825,7 +853,7 @@
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#about" data-i18n="nav_about" onclick="closeMobileMenu()">About</a>
-  <a href="#projects" data-i18n="nav_projects" onclick="closeMobileMenu(); if(window.innerWidth<=600){event.preventDefault();openAllProjects();}">Projects</a>
+  <a href="#" id="mobileProjectsLink" onclick="event.preventDefault(); closeMobileMenu(); openAllProjects();">Projects</a>
   <a href="#skills" data-i18n="nav_skills" onclick="closeMobileMenu()">Stack</a>
   <a href="#parcours" data-i18n="nav_parcours" onclick="closeMobileMenu()">Journey</a>
   <a href="#contact" data-i18n="nav_contact" onclick="closeMobileMenu()">Contact</a>
@@ -1160,8 +1188,8 @@
     <div class="reveal">
       <p data-i18n="contact_desc">Available for an apprenticeship in September 2026 (Master's, 2 years). Open to opportunities in data science, analytics and machine learning.</p>
       <div class="contact-links">
-        <a href="mailto:nathanchansingman@gmail.com" class="contact-link">
-          <div><div class="contact-link-label">Email</div><div class="contact-link-value">nathanchansingman@gmail.com</div></div>
+        <a href="/cdn-cgi/l/email-protection#9bf5faeff3faf5f8f3faf5e8f2f5fcf6faf5dbfcf6faf2f7b5f8f4f6" class="contact-link">
+          <div><div class="contact-link-label">Email</div><div class="contact-link-value"><span class="__cf_email__" data-cfemail="e886899c8089868b8089869b81868f858986a88f85898184c68b8785">[email&#160;protected]</span></div></div>
           <span class="contact-link-arrow">↗</span>
         </a>
         <a href="https://www.linkedin.com/in/nathan-chan-sing-man-560b10272/" target="_blank" class="contact-link">
@@ -1198,11 +1226,11 @@
   <div class="fm-scene">
     <!-- LEFT: text -->
     <div class="fm-left">
+      <button class="fm-close" onclick="closeFolder()">✕</button>
       <div id="fmPaperInner"></div>
     </div>
     <!-- RIGHT: stacked images -->
-    <div class="fm-right" style="padding-top:52px;">
-      <button class="fm-close" onclick="closeFolder()">✕</button>
+    <div class="fm-right">
       <div class="fm-img-stack" id="fmImgStack"></div>
     </div>
   </div>
@@ -1343,7 +1371,7 @@
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ── I18N ── */
 const translations = {
   en: {
@@ -1485,6 +1513,9 @@ function setLang(lang) {
       el.innerHTML = t[key];
     }
   });
+  // Manually update mobile Projects link text (no data-i18n to protect onclick)
+  const mpl = document.getElementById('mobileProjectsLink');
+  if (mpl && t['nav_projects']) mpl.textContent = t['nav_projects'];
   // Update lang buttons
   document.getElementById('btnEN').classList.toggle('active', lang === 'en');
   document.getElementById('btnFR').classList.toggle('active', lang === 'fr');
@@ -1690,6 +1721,18 @@ function openFolder(card, id) {
   card.classList.add('opening');
   setTimeout(() => card.classList.remove('opening'), 420);
 
+  const isMobile = window.innerWidth <= 700;
+
+  // Build image HTML for mobile (inline at bottom of text)
+  let mobileImagesHtml = '';
+  if (isMobile) {
+    mobileImagesHtml = `
+      <div class="fm-mobile-images">
+        ${[1,2,3].map(i => `<img src="Images/${id}_${i}.png" alt="${id}_${i}" onerror="this.style.display='none'">`).join('')}
+      </div>
+    `;
+  }
+
   document.getElementById('fmPaperInner').innerHTML = `
     <p class="fm-label">${l.label}</p>
     <h2 class="fm-title">${l.title}</h2>
@@ -1700,22 +1743,25 @@ function openFolder(card, id) {
     <p class="fm-section">${t.m_stack}</p>
     <div class="fm-tags">${p.tags.map(tag=>`<span class="fm-tag">${tag}</span>`).join('')}</div>
     <div class="fm-footer"><span class="fm-date">${p.date}</span><a href="${p.github}" target="_blank" class="fm-github">${t.m_github}</a></div>
+    ${mobileImagesHtml}
   `;
 
-  // Build stacked images
+  // Desktop: build stacked images in fm-right column
+  const fmRight = document.querySelector('.fm-right');
   const stack = document.getElementById('fmImgStack');
-  stack.innerHTML = '';
-  for (let i = 1; i <= 3; i++) {
-    const imgName = `${id}_${i}`;
-    const item = document.createElement('div');
-    item.className = 'fm-img-item';
-    item.innerHTML = `<img src="Images/${imgName}.png" alt="${imgName}" onerror="this.parentNode.remove(); if(!document.getElementById('fmImgStack').children.length) document.querySelector('.fm-right').style.display='none'">`;
-
-
-    stack.appendChild(item);
+  if (isMobile) {
+    fmRight.style.display = 'none';
+  } else {
+    fmRight.style.display = '';
+    stack.innerHTML = '';
+    for (let i = 1; i <= 3; i++) {
+      const imgName = `${id}_${i}`;
+      const item = document.createElement('div');
+      item.className = 'fm-img-item';
+      item.innerHTML = `<img src="Images/${imgName}.png" alt="${imgName}" onerror="this.parentNode.remove(); if(!document.getElementById('fmImgStack').children.length) document.querySelector('.fm-right').style.display='none'">`;
+      stack.appendChild(item);
+    }
   }
-  // Reset fm-right visibility
-  document.querySelector('.fm-right').style.display = '';
 
   setTimeout(() => {
     const modal = document.getElementById('folderModal');
@@ -1858,6 +1904,26 @@ window.addEventListener('scroll', () => {
   }
 }, { passive: true });
 
+/* ── NAV SCROLL inside allProjectsPage overlay ── */
+(function() {
+  let _allLastY = 0;
+  const allPage = document.getElementById('allProjectsPage');
+  allPage.addEventListener('scroll', () => {
+    if (window.innerWidth > 600) return;
+    const navbar = document.getElementById('navbar');
+    const y = allPage.scrollTop;
+    navbar.classList.toggle('scrolled', y > 60);
+    const diff = y - _allLastY;
+    if (diff > 6) {
+      navbar.classList.add('nav-hidden');
+      closeMobileMenu();
+    } else if (diff < -6) {
+      navbar.classList.remove('nav-hidden');
+    }
+    _allLastY = y;
+  }, { passive: true });
+})();
+
 /* ── HAMBURGER ── */
 const hamburgerBtn = document.getElementById('hamburgerBtn');
 const mobileMenu = document.getElementById('mobileMenu');
@@ -1911,13 +1977,15 @@ setTimeout(type, 1400);
 
 /* ── SCROLL REVEAL ── */
 const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (!e.isIntersecting) return;
-    e.target.classList.add('visible');
-    observer.unobserve(e.target);
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
   });
-}, { threshold: 0.1 });
+}, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
 </script>
 </body>
 </html>
