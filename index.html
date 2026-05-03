@@ -872,9 +872,9 @@
     </ul>
     <div class="nav-controls">
       <div class="lang-toggle">
-        <button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="btnEN" onclick="setLang('en')">EN</button>
         <div class="lang-separator"></div>
-        <button class="lang-btn" id="btnFR" onclick="setLang('fr')">FR</button>
+        <button class="lang-btn active" id="btnFR" onclick="setLang('fr')">FR</button>
       </div>
       <div class="theme-toggle-wrap">
         <span class="toggle-label" id="themeLabel">Light</span>
@@ -1585,7 +1585,7 @@ const translations = {
   }
 };
 
-let currentLang = 'en';
+let currentLang = 'fr';
 
 function setLang(lang) {
   currentLang = lang;
