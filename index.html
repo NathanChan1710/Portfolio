@@ -1603,8 +1603,10 @@ function setLang(lang) {
   // Update lang buttons
   document.getElementById('btnEN').classList.toggle('active', lang === 'en');
   document.getElementById('btnFR').classList.toggle('active', lang === 'fr');
-  document.getElementById('btnEN2').classList.toggle('active', lang === 'en');
-  document.getElementById('btnFR2').classList.toggle('active', lang === 'fr');
+  const btnEN2 = document.getElementById('btnEN2');
+  const btnFR2 = document.getElementById('btnFR2');
+  if (btnEN2) btnEN2.classList.toggle('active', lang === 'en');
+  if (btnFR2) btnFR2.classList.toggle('active', lang === 'fr');
   // Update typewriter words
   currentWords = lang === 'en' ? wordsEN : wordsFR;
   // Update document lang
@@ -1920,6 +1922,7 @@ function openAllProjects() {
   page.scrollTop = 0;
   setLang(currentLang);
 }
+setLang(currentLang);
 function closeAllProjects() {
   const page = document.getElementById('allProjectsPage');
   page.style.display = 'none';
