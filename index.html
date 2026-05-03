@@ -1922,7 +1922,6 @@ function openAllProjects() {
   page.scrollTop = 0;
   setLang(currentLang);
 }
-setLang(currentLang);
 function closeAllProjects() {
   const page = document.getElementById('allProjectsPage');
   page.style.display = 'none';
@@ -2102,7 +2101,7 @@ if (heroProjectsBtn) {
 /* ── TYPEWRITER ── */
 const wordsEN = ['data_scientist()','machine_learning()','data_viz()'];
 const wordsFR = ['data_scientist()','machine_learning()','data_viz()'];
-let currentWords = wordsEN;
+let currentWords = currentLang === 'en' ? wordsEN : wordsFR;
 let wi=0, ci=0, deleting=false;
 const tw = document.getElementById('typewriter');
 function type() {
@@ -2117,6 +2116,7 @@ function type() {
     setTimeout(type, 35);
   }
 }
+setLang(currentLang);
 setTimeout(type, 1400);
 
 /* ── SCROLL REVEAL ── */
